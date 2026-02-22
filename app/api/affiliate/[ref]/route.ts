@@ -3,10 +3,10 @@ import { supabase } from '@/lib/supabase';
 
 export async function GET(
     req: Request,
-    { params }: { params: { ref: string } }
+    { params }: { params: Promise<{ ref: string }> }
 ) {
     try {
-        const ref = params.ref;
+        const { ref } = await params;
 
         const { data, error } = await supabase
             .from('affiliates')
