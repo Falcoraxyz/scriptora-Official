@@ -1,21 +1,23 @@
 "use client"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { ArrowRight, PlayCircle, Download, Bot } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { GlassCard } from "@/components/ui/glass-card"
 import { detectPlatform, getDownloadUrl, Platform, DOWNLOAD_LINKS } from "@/lib/downloads"
 import { useEffect, useState } from "react"
+import { DownloadModal } from "./download-modal"
 
 export function Hero() {
     const [platform, setPlatform] = useState<Platform>('unknown');
+    const [showDemo, setShowDemo] = useState(false);
+    const [showDownload, setShowDownload] = useState(false);
 
     useEffect(() => {
         setPlatform(detectPlatform());
     }, []);
 
     const handleDownload = () => {
-        const url = getDownloadUrl(platform);
-        window.location.href = url;
+        setShowDownload(true);
     };
 
     const getBtnLabel = () => {
@@ -70,7 +72,7 @@ export function Hero() {
                                 variant="ghost"
                                 size="lg"
                                 className="rounded-full h-12 px-8 border border-white/10 hover:bg-white/5"
-                                onClick={() => alert("Video Demo: Coming Soon! Follow our socials for updates.")}
+                                onClick={() => setShowDemo(true)}
                             >
                                 <PlayCircle className="mr-2 h-4 w-4" /> Watch Demo
                             </Button>
@@ -78,11 +80,11 @@ export function Hero() {
 
                         <div className="flex items-center gap-6 px-4 text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground/60">
                             <span>Other Systems:</span>
-                            <a href={DOWNLOAD_LINKS.windows} className="hover:text-primary transition-colors">Windows</a>
+                            <button onClick={() => { setPlatform('windows'); setShowDownload(true); }} className="hover:text-primary transition-colors">Windows</button>
                             <div className="w-1 h-1 rounded-full bg-white/20" />
-                            <a href={DOWNLOAD_LINKS.macos_arm} className="hover:text-primary transition-colors">macOS</a>
+                            <button onClick={() => { setPlatform('macos'); setShowDownload(true); }} className="hover:text-primary transition-colors">macOS</button>
                             <div className="w-1 h-1 rounded-full bg-white/20" />
-                            <a href={DOWNLOAD_LINKS.linux_deb} className="hover:text-primary transition-colors">Linux</a>
+                            <button onClick={() => { setPlatform('linux'); setShowDownload(true); }} className="hover:text-primary transition-colors">Linux</button>
                         </div>
                     </div>
                 </motion.div>
@@ -144,6 +146,61 @@ export function Hero() {
                     <div className="absolute inset-0 bg-primary/20 blur-[100px] -z-10 rounded-full"></div>
                 </motion.div>
             </div>
+
+            {/* Demo Modal */}
+            <AnimatePresence>
+                {showDemo && (
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-10">
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setShowDemo(false)}
+                            className="absolute inset-0 bg-black/90 backdrop-blur-sm"
+                        />
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                            className="relative w-full max-w-5xl aspect-video bg-[#0B0613] rounded-3xl border border-white/10 overflow-hidden shadow-2xl"
+                        >
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => setShowDemo(false)}
+                                className="absolute top-4 right-4 z-10 text-white/50 hover:text-white hover:bg-white/10 rounded-full"
+                            >
+                                <Bot className="w-6 h-6 rotate-45" />
+                            </Button>
+
+                            <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-12 space-y-6">
+                                <div className="w-20 h-20 bg-primary/20 rounded-3xl flex items-center justify-center mb-4">
+                                    <PlayCircle className="w-10 h-10 text-primary" />
+                                </div>
+                                <div className="space-y-2">
+                                    <h2 className="text-3xl font-heading font-bold">Demo Video Coming Soon</h2>
+                                    <p className="text-muted-foreground max-w-md mx-auto">
+                                        We are currently filming a deep-dive walkthrough of Scriptora v1.0.2. Follow us on X or Discord to be the first to watch!
+                                    </p>
+                                </div>
+                                <div className="flex gap-4 pt-4">
+                                    <Button variant="outline" className="border-white/10 rounded-full" onClick={() => window.open("https://x.com/silentonmode", "_blank")}>Follow on X</Button>
+                                    <Button variant="outline" className="border-white/10 rounded-full" onClick={() => window.open("https://discord.gg/k3eUAHtZtE", "_blank")}>Join Discord</Button>
+                                </div>
+                            </div>
+
+                            {/* Background decoration for modal */}
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px] -z-10" />
+                            <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] -z-10" />
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
+            <DownloadModal
+                isOpen={showDownload}
+                onClose={() => setShowDownload(false)}
+                platform={platform}
+            />
         </section>
     )
 }

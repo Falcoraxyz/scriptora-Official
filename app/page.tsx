@@ -1,3 +1,4 @@
+"use client"
 import { Navbar } from "@/components/navbar"
 import { Hero } from "@/components/hero"
 import { ProblemSection } from "@/components/problem-section"
@@ -9,8 +10,17 @@ import { WhoIsItFor } from "@/components/who-is-it-for"
 import { PricingSection } from "@/components/pricing-section"
 import { CTASection } from "@/components/cta-section"
 import { Footer } from "@/components/footer"
+import { useEffect } from "react"
+import { initializeReferralTracking } from "@/lib/referral"
 
 export default function Home() {
+  useEffect(() => {
+    const init = async () => {
+      await initializeReferralTracking();
+    }
+    init();
+  }, []);
+
   return (
     <main className="min-h-screen">
       <Navbar />

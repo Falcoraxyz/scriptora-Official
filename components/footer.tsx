@@ -13,10 +13,11 @@ export function Footer() {
                     <p className="text-sm text-muted-foreground opacity-60">© 2026 Scriptora Inc.</p>
                 </div>
 
-                <div className="flex gap-8 text-sm font-medium text-muted-foreground">
+                <div className="flex gap-8 text-sm font-medium text-muted-foreground order-2">
                     <a href="#features" className="hover:text-primary transition-colors">Features</a>
                     <a href="#how-it-works" className="hover:text-primary transition-colors">How It Works</a>
                     <a href="#pricing" className="hover:text-primary transition-colors">Pricing</a>
+                    <Link href="/affiliate" className="text-primary/80 hover:text-primary transition-colors font-bold">Become an Affiliate</Link>
                 </div>
 
                 <div className="flex gap-6 items-center">

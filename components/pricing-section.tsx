@@ -1,10 +1,13 @@
 "use client"
 import { Button } from "@/components/ui/button"
 import { GlassCard } from "@/components/ui/glass-card"
-import { Check, Download, ArrowRight } from "lucide-react"
+import { Check, Download, ArrowRight, X, Mail, Key } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useEffect, useState } from "react"
 import { detectPlatform, getDownloadUrl, Platform, DOWNLOAD_LINKS } from "@/lib/downloads"
+import { getStoredReferral } from "@/lib/referral"
+import { motion, AnimatePresence } from "framer-motion"
+import { DownloadModal } from "./download-modal"
 
 const plans = [
     {
@@ -24,14 +27,25 @@ const plans = [
         currency: "IDR",
         desc: "For serious researchers",
         features: ["Everything in Starter", "Unlimited DOCX Exports", "Professional PDF Outputs", "Automatic Table of Contents", "PUEBI Formatting Guard"],
-        btn: "Chat for Activation",
+        btn: "Get License Now",
         action: "contact",
         popular: true
     }
 ]
 
+declare global {
+    interface Window {
+        snap: any;
+    }
+}
+
 export function PricingSection() {
     const [platform, setPlatform] = useState<Platform>('unknown');
+    const [loading, setLoading] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [showDownloadModal, setShowDownloadModal] = useState(false);
+    const [customerEmail, setCustomerEmail] = useState("");
+    const [deviceKey, setDeviceKey] = useState("");
 
     useEffect(() => {
         setPlatform(detectPlatform());
@@ -39,16 +53,82 @@ export function PricingSection() {
 
     const handleAction = (action: string) => {
         if (action === "download") {
-            const url = getDownloadUrl(platform);
-            window.location.href = url;
-        } else {
-            // Updated WhatsApp link with specific activation request
-            window.open("https://wa.me/621958860338?text=Halo%20Scriptora,%20saya%20ingin%20aktivasi%20Pro%20License.%20Ini%20Device%20Key%20saya:", "_blank");
+            setShowDownloadModal(true);
+            return;
+        }
+        setShowModal(true);
+    };
+
+    const processCheckout = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!customerEmail || !deviceKey) {
+            alert("Harap isi Email dan Device Key Anda.");
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const refId = getStoredReferral();
+
+            // 1. Get Snap Token from our API
+            const response = await fetch('/api/checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    amount: 249000,
+                    refId: refId || 'direct',
+                    affiliateId: refId ? await getAffiliateIdFromRef(refId) : null,
+                    email: customerEmail,
+                    deviceKey: deviceKey
+                })
+            });
+
+            const data = await response.json();
+            const token = data.token;
+
+            if (!token) {
+                console.error('[Pricing] No token received:', data);
+                alert("Gagal mendapatkan kode pembayaran. Pastikan Server Key & Client Key di .env.local sudah benar.");
+                return;
+            }
+
+            // 2. Open Snap Popup
+            if (window.snap) {
+                setShowModal(false);
+                window.snap.pay(token, {
+                    onSuccess: (result: any) => {
+                        console.log('Payment Success:', result);
+                        alert("Pembayaran Berhasil! Lisensi akan dikirim ke email: " + customerEmail);
+                    },
+                    onPending: (result: any) => {
+                        console.log('Payment Pending:', result);
+                        alert("Menunggu pembayaran...");
+                    },
+                    onError: (result: any) => {
+                        console.error('Payment Error:', result);
+                        alert("Terjadi kesalahan pada pembayaran.");
+                    },
+                    onClose: () => {
+                        console.log('Snap Popup Closed');
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('[Pricing] Checkout Error:', error);
+            alert("Gagal memproses pembayaran. Silakan coba lagi.");
+        } finally {
+            setLoading(false);
         }
     };
 
+    // Helper to resolve refId to affiliate UUID
+    const getAffiliateIdFromRef = async (ref: string) => {
+        const { data } = await fetch(`/api/affiliate/${ref}`).then(res => res.json()).catch(() => ({ data: null }));
+        return data?.id || null;
+    };
+
     return (
-        <section id="pricing" className="py-24 container mx-auto px-4">
+        <section id="pricing" className="py-24 container mx-auto px-4 relative">
             <div className="max-w-2xl mx-auto text-center mb-16 space-y-4">
                 <h2 className="text-4xl font-heading font-bold">Simple, Transparent Pricing</h2>
                 <p className="text-muted-foreground text-lg text-balance">
@@ -115,9 +195,9 @@ export function PricingSection() {
                             </Button>
 
                             <div className="flex justify-center gap-4 mt-4 text-[9px] uppercase tracking-wider font-bold text-muted-foreground/60">
-                                <a href={DOWNLOAD_LINKS.windows} className="hover:text-primary transition-colors">Win</a>
-                                <a href={DOWNLOAD_LINKS.macos_arm} className="hover:text-primary transition-colors">Mac</a>
-                                <a href={DOWNLOAD_LINKS.linux_deb} className="hover:text-primary transition-colors">Linux</a>
+                                <button onClick={() => { setPlatform('windows'); setShowDownloadModal(true); }} className="hover:text-primary transition-colors">Win</button>
+                                <button onClick={() => { setPlatform('macos'); setShowDownloadModal(true); }} className="hover:text-primary transition-colors">Mac</button>
+                                <button onClick={() => { setPlatform('linux'); setShowDownloadModal(true); }} className="hover:text-primary transition-colors">Linux</button>
                             </div>
                         </GlassCard>
                     </div>
@@ -145,11 +225,100 @@ export function PricingSection() {
                         <div className="space-y-3">
                             <div className="text-primary font-bold text-2xl opacity-20">03</div>
                             <p className="text-sm font-medium text-white/90">Send for License</p>
-                            <p className="text-xs text-muted-foreground">Click <strong>"Chat for Activation"</strong> to send your key and receive your Pro License code.</p>
+                            <p className="text-xs text-muted-foreground">Enter your key in the form above and pay to receive your automated license.</p>
                         </div>
                     </div>
                 </GlassCard>
             </div>
+
+            {/* Checkout Modal */}
+            <AnimatePresence>
+                {showModal && (
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setShowModal(false)}
+                            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+                        />
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                            className="relative w-full max-w-md z-10"
+                        >
+                            <GlassCard className="p-8 border-primary/30 shadow-2xl bg-[#0F0819]">
+                                <button
+                                    onClick={() => setShowModal(false)}
+                                    className="absolute top-4 right-4 text-white/40 hover:text-white transition-colors"
+                                >
+                                    <X className="w-5 h-5" />
+                                </button>
+
+                                <div className="text-center mb-8">
+                                    <h3 className="text-2xl font-bold text-white mb-2">Aktivasi Pro License</h3>
+                                    <p className="text-sm text-muted-foreground">Silakan isi data berikut untuk menerima lisensi otomatis.</p>
+                                </div>
+
+                                <form onSubmit={processCheckout} className="space-y-6">
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold uppercase tracking-wider text-primary/80">Email Penerima</label>
+                                        <div className="relative">
+                                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+                                            <input
+                                                required
+                                                type="email"
+                                                placeholder="nama@email.com"
+                                                value={customerEmail}
+                                                onChange={(e) => setCustomerEmail(e.target.value)}
+                                                className="w-full bg-white/[0.03] border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white focus:border-primary/50 focus:ring-1 focus:ring-primary/50 outline-none transition-all placeholder:text-white/20"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold uppercase tracking-wider text-primary/80">Public Device Key</label>
+                                        <div className="relative">
+                                            <Key className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+                                            <input
+                                                required
+                                                type="text"
+                                                placeholder="Copy dari aplikasi Scriptora"
+                                                value={deviceKey}
+                                                onChange={(e) => setDeviceKey(e.target.value)}
+                                                className="w-full bg-white/[0.03] border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white focus:border-primary/50 focus:ring-1 focus:ring-primary/50 outline-none transition-all placeholder:text-white/20"
+                                            />
+                                        </div>
+                                        <p className="text-[10px] text-muted-foreground leading-relaxed">
+                                            *Dapatkan di aplikasi: <strong>Output &rarr; Free &rarr; Copy Public Key</strong>
+                                        </p>
+                                    </div>
+
+                                    <Button
+                                        type="submit"
+                                        variant="glow"
+                                        className="w-full py-6 rounded-xl text-lg group font-bold"
+                                        disabled={loading}
+                                    >
+                                        {loading ? "Memproses..." : (
+                                            <>
+                                                Bayar Sekarang (Rp 249K)
+                                                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                            </>
+                                        )}
+                                    </Button>
+                                </form>
+                            </GlassCard>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
+            <DownloadModal
+                isOpen={showDownloadModal}
+                onClose={() => setShowDownloadModal(false)}
+                platform={platform}
+            />
         </section>
     )
 }
