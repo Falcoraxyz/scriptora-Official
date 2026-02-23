@@ -2,22 +2,19 @@
 import { Button } from "@/components/ui/button"
 import { motion, useScroll, useMotionValueEvent } from "framer-motion"
 import { useEffect, useState } from "react"
-import { detectPlatform, getDownloadUrl, Platform } from "@/lib/downloads"
+import { detectPlatform, Platform } from "@/lib/downloads"
+import { DownloadModal } from "./download-modal"
 import { cn } from "@/lib/utils"
 
 export function Navbar() {
     const [scrolled, setScrolled] = useState(false)
     const { scrollY, scrollYProgress } = useScroll()
     const [platform, setPlatform] = useState<Platform>('unknown');
+    const [showDownloadModal, setShowDownloadModal] = useState(false);
 
     useEffect(() => {
         setPlatform(detectPlatform());
     }, []);
-
-    const handleDownload = () => {
-        const url = getDownloadUrl(platform);
-        window.location.href = url;
-    };
 
     useMotionValueEvent(scrollY, "change", (latest) => {
         setScrolled(latest > 50)
@@ -55,7 +52,7 @@ export function Navbar() {
                         variant="glow"
                         size="sm"
                         className="rounded-full px-6 text-xs uppercase tracking-widest font-bold h-9"
-                        onClick={handleDownload}
+                        onClick={() => setShowDownloadModal(true)}
                     >
                         Get Started
                     </Button>
@@ -66,6 +63,12 @@ export function Navbar() {
             <motion.div
                 className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary to-transparent origin-left"
                 style={{ scaleX: scrollYProgress }}
+            />
+
+            <DownloadModal
+                isOpen={showDownloadModal}
+                onClose={() => setShowDownloadModal(false)}
+                platform={platform}
             />
         </motion.nav>
     )
