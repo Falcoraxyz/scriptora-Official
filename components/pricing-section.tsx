@@ -304,7 +304,6 @@ Mohon instruksi untuk pembayarannya.`;
                                                     )}
                                                 >
                                                     Support Admin {idx + 1}
-                                                    <div className="text-[8px] opacity-60 mt-0.5">{num}</div>
                                                 </button>
                                             ))}
                                         </div>
