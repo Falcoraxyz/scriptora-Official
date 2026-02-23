@@ -2,21 +2,18 @@
 
 import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react"
-import { detectPlatform, getDownloadUrl, Platform, DOWNLOAD_LINKS } from "@/lib/downloads"
+import { detectPlatform, Platform, DOWNLOAD_LINKS } from "@/lib/downloads"
+import { DownloadModal } from "./download-modal"
 import { motion } from "framer-motion"
 import { Sparkles } from "lucide-react"
 
 export function CTASection() {
     const [platform, setPlatform] = useState<Platform>('unknown');
+    const [showDownloadModal, setShowDownloadModal] = useState(false);
 
     useEffect(() => {
         setPlatform(detectPlatform());
     }, []);
-
-    const handleDownload = () => {
-        const url = getDownloadUrl(platform);
-        window.location.href = url;
-    };
 
     return (
         <section className="py-40 relative text-center overflow-hidden">
@@ -51,19 +48,25 @@ export function CTASection() {
                             variant="glow"
                             size="lg"
                             className="h-14 px-12 text-lg rounded-full shadow-[0_0_60px_rgba(138,46,255,0.4)] hover:shadow-[0_0_80px_rgba(138,46,255,0.5)] transition-shadow duration-500"
-                            onClick={handleDownload}
+                            onClick={() => setShowDownloadModal(true)}
                         >
                             Start Writing with Scriptora
                         </Button>
                     </div>
 
                     <div className="flex justify-center gap-8 mt-4 text-xs uppercase tracking-[0.3em] font-bold text-muted-foreground/40">
-                        <a href={DOWNLOAD_LINKS.windows} className="hover:text-primary transition-colors duration-300">Windows</a>
-                        <a href={DOWNLOAD_LINKS.macos_arm} className="hover:text-primary transition-colors duration-300">macOS</a>
-                        <a href={DOWNLOAD_LINKS.linux_deb} className="hover:text-primary transition-colors duration-300">Linux</a>
+                        <button onClick={() => { setPlatform('windows'); setShowDownloadModal(true); }} className="hover:text-primary transition-colors duration-300">Windows</button>
+                        <button onClick={() => { setPlatform('macos'); setShowDownloadModal(true); }} className="hover:text-primary transition-colors duration-300">macOS</button>
+                        <button onClick={() => { setPlatform('linux'); setShowDownloadModal(true); }} className="hover:text-primary transition-colors duration-300">Linux</button>
                     </div>
                 </motion.div>
             </div>
+
+            <DownloadModal
+                isOpen={showDownloadModal}
+                onClose={() => setShowDownloadModal(false)}
+                platform={platform}
+            />
         </section>
     )
 }
