@@ -33,8 +33,11 @@ export function Navbar() {
             )}
         >
             <div className="container mx-auto px-4 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                    <img src="/icon.png" alt="Scriptora Logo" className="w-8 h-8 rounded-lg object-contain" />
+                <div
+                    className="flex items-center gap-2 cursor-pointer group"
+                    onClick={() => window.location.href = '/'}
+                >
+                    <img src="/icon.png" alt="Scriptora Logo" className="w-8 h-8 rounded-lg object-contain group-hover:scale-110 transition-transform" />
                     <span className="text-xl font-heading font-bold tracking-tight">Scriptora</span>
                 </div>
 
