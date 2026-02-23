@@ -53,7 +53,7 @@ export default function AffiliatePage() {
 
     if (!mounted || loading) return <div className="min-h-screen bg-[#06030A]" />
 
-    const affiliateLink = user ? `https://scriptora.vercel.app?ref=${user.refId}` : ""
+    const affiliateLink = user ? `https://scriptora-official.vercel.app?ref=${user.refId}` : ""
 
     const handleCopy = () => {
         navigator.clipboard.writeText(affiliateLink)
