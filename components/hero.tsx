@@ -1,6 +1,6 @@
 "use client"
-import { motion, AnimatePresence } from "framer-motion"
-import { ArrowRight, PlayCircle, Download, Bot } from "lucide-react"
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
+import { ArrowRight, PlayCircle, Download, Bot, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { GlassCard } from "@/components/ui/glass-card"
 import { detectPlatform, getDownloadUrl, Platform, DOWNLOAD_LINKS } from "@/lib/downloads"
@@ -11,6 +11,11 @@ export function Hero() {
     const [platform, setPlatform] = useState<Platform>('unknown');
     const [showDemo, setShowDemo] = useState(false);
     const [showDownload, setShowDownload] = useState(false);
+
+    const { scrollY } = useScroll();
+    const y1 = useTransform(scrollY, [0, 500], [0, 200]);
+    const y2 = useTransform(scrollY, [0, 500], [0, -150]);
+    const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
     useEffect(() => {
         setPlatform(detectPlatform());
@@ -29,64 +34,88 @@ export function Hero() {
         }
     };
 
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.15,
+                delayChildren: 0.3
+            }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 30 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.8 }
+        }
+    };
+
     return (
-        <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
-            {/* Background blobs */}
-            <div className="absolute top-20 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[128px] pointer-events-none" />
-            <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[128px] pointer-events-none" />
+        <section className="relative min-h-[110vh] flex items-center pt-20 overflow-hidden bg-vibrant-gradient">
+            {/* Background blobs with parallax */}
+            <motion.div
+                style={{ y: y1 }}
+                className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[128px] pointer-events-none animate-pulse-glow"
+            />
+            <motion.div
+                style={{ y: y2 }}
+                className="absolute bottom-20 right-1/4 w-[400px] h-[400px] bg-primary/10 rounded-full blur-[128px] pointer-events-none"
+            />
 
             <div className="container mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center">
                 <motion.div
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="space-y-6"
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                    className="space-y-8 relative z-10"
                 >
-                    <div className="inline-flex items-center rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-sm text-primary">
-                        <span className="flex h-2 w-2 rounded-full bg-primary mr-2 animate-pulse"></span>
-                        v1.0.2 Stable Release is Live
-                    </div>
+                    <motion.div variants={itemVariants} className="inline-flex items-center rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+                        <Sparkles className="w-3 h-3 mr-2 animate-pulse" />
+                        v1.0.2 Stable Release
+                    </motion.div>
 
-                    <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">
-                        Finalize Your Thesis, <br />
-                        <span className="text-primary-purple bg-clip-text text-transparent bg-gradient-to-r from-[#8A2EFF] to-[#B57CFF]">
-                            Faster & Smarter.
-                        </span>
-                    </h1>
+                    <motion.h1 variants={itemVariants} className="font-heading text-6xl md:text-7xl lg:text-8xl font-black leading-[0.9] tracking-tighter bg-clip-text text-transparent bg-gradient-to-br from-white via-white to-white/20">
+                        Finalize Your <br />
+                        Thesis <span className="text-primary-purple bg-clip-text text-transparent bg-gradient-to-r from-[#8A2EFF] via-[#B57CFF] to-[#8A2EFF] bg-[length:200%_auto] animate-gradient-x">Smarter.</span>
+                    </motion.h1>
 
-                    <p className="text-xl text-muted-foreground max-w-lg leading-relaxed">
-                        The ultimate AI Academic IDE designed for perfection. Free to write, structure, and cite. Get Pro when you are ready to export your final masterpiece.
-                    </p>
+                    <motion.p variants={itemVariants} className="text-lg md:text-xl text-muted-foreground/80 max-w-lg leading-relaxed font-medium">
+                        The ultimate AI Academic IDE designed for perfection. Free to write, structure, and cite. Get Pro when you are ready to export.
+                    </motion.p>
 
-                    <div className="flex flex-col gap-4 pt-4">
+                    <motion.div variants={itemVariants} className="flex flex-col gap-6 pt-4">
                         <div className="flex flex-wrap gap-4">
                             <Button
                                 variant="glow"
                                 size="lg"
-                                className="rounded-full h-12 px-8"
+                                className="rounded-full h-14 px-10 text-md font-bold group shadow-[0_0_30px_rgba(138,46,255,0.3)] hover:shadow-[0_0_50px_rgba(138,46,255,0.5)] transition-all"
                                 onClick={handleDownload}
                             >
-                                <Download className="mr-2 h-4 w-4" /> {getBtnLabel()}
+                                <Download className="mr-2 h-5 w-5 group-hover:-translate-y-1 transition-transform" /> {getBtnLabel()}
                             </Button>
                             <Button
                                 variant="ghost"
                                 size="lg"
-                                className="rounded-full h-12 px-8 border border-white/10 hover:bg-white/5"
+                                className="rounded-full h-14 px-10 border border-white/10 hover:bg-white/5 text-md font-bold group"
                                 onClick={() => setShowDemo(true)}
                             >
-                                <PlayCircle className="mr-2 h-4 w-4" /> Watch Demo
+                                <PlayCircle className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform text-primary" /> Watch Demo
                             </Button>
                         </div>
 
-                        <div className="flex items-center gap-6 px-4 text-[10px] uppercase tracking-[0.2em] font-bold text-muted-foreground/60">
-                            <span>Other Systems:</span>
-                            <button onClick={() => { setPlatform('windows'); setShowDownload(true); }} className="hover:text-primary transition-colors">Windows</button>
-                            <div className="w-1 h-1 rounded-full bg-white/20" />
-                            <button onClick={() => { setPlatform('macos'); setShowDownload(true); }} className="hover:text-primary transition-colors">macOS</button>
-                            <div className="w-1 h-1 rounded-full bg-white/20" />
-                            <button onClick={() => { setPlatform('linux'); setShowDownload(true); }} className="hover:text-primary transition-colors">Linux</button>
+                        <div className="flex items-center gap-6 px-4 text-[10px] uppercase tracking-[0.25em] font-black text-muted-foreground/40">
+                            <span className="opacity-50">Available on:</span>
+                            <button onClick={() => { setPlatform('windows'); setShowDownload(true); }} className="hover:text-primary transition-all hover:scale-110">Windows</button>
+                            <div className="w-1 h-1 rounded-full bg-white/10" />
+                            <button onClick={() => { setPlatform('macos'); setShowDownload(true); }} className="hover:text-primary transition-all hover:scale-110">macOS</button>
+                            <div className="w-1 h-1 rounded-full bg-white/10" />
+                            <button onClick={() => { setPlatform('linux'); setShowDownload(true); }} className="hover:text-primary transition-all hover:scale-110">Linux</button>
                         </div>
-                    </div>
+                    </motion.div>
                 </motion.div>
 
                 <motion.div
@@ -143,7 +172,7 @@ export function Hero() {
                     </motion.div>
 
                     {/* Glow behind hero image */}
-                    <div className="absolute inset-0 bg-primary/20 blur-[100px] -z-10 rounded-full"></div>
+                    <div className="absolute inset-0 bg-primary/30 blur-[120px] -z-10 rounded-full animate-pulse-glow"></div>
                 </motion.div>
             </div>
 

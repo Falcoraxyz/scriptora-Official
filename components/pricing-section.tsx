@@ -143,6 +143,25 @@ Mohon instruksi untuk selanjutnya.`;
         return data?.id || null;
     };
 
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.2
+            }
+        }
+    };
+
+    const cardVariants = {
+        hidden: { opacity: 0, y: 40 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.8 }
+        }
+    };
+
     return (
         <section id="pricing" className="py-24 container mx-auto px-4 relative">
             <div className="max-w-2xl mx-auto text-center mb-16 space-y-4">
@@ -152,18 +171,21 @@ Mohon instruksi untuk selanjutnya.`;
                 </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto relative mb-20">
+            <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto relative mb-20"
+            >
                 {plans.map((p, i) => (
-                    <div key={i} className="relative group">
-                        {p.popular && (
-                            <div className="absolute inset-0 bg-primary/20 blur-[100px] -z-10 rounded-full" />
-                        )}
+                    <motion.div variants={cardVariants}>
                         <GlassCard className={cn(
-                            "flex flex-col h-full relative p-8 transition-transform hover:scale-[1.02]",
+                            "flex flex-col h-full relative p-8 transition-all duration-500 hover:shadow-[0_0_80px_rgba(138,46,255,0.15)]",
                             p.popular ? "border-primary/50 bg-[#140A1F]/80 shadow-[0_0_50px_rgba(138,46,255,0.1)]" : "border-white/10"
                         )}>
                             {p.popular && (
-                                <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-bold text-center bg-primary text-white py-1 px-6 rounded-full border border-primary/50 uppercase tracking-widest">
+                                <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-black text-center bg-primary text-white py-1.5 px-8 rounded-full border border-primary/50 uppercase tracking-[0.2em] shadow-[0_0_20px_rgba(138,46,255,0.4)] animate-pulse">
                                     Flash Sale - 50% OFF
                                 </div>
                             )}
@@ -216,9 +238,9 @@ Mohon instruksi untuk selanjutnya.`;
                                 <button onClick={() => { setPlatform('linux'); setShowDownloadModal(true); }} className="hover:text-primary transition-colors">Linux</button>
                             </div>
                         </GlassCard>
-                    </div>
+                    </motion.div>
                 ))}
-            </div>
+            </motion.div>
 
             {/* Manual Activation Guide */}
             <div className="max-w-3xl mx-auto">
