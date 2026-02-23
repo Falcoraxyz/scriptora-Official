@@ -1,7 +1,7 @@
 "use client"
 import { Button } from "@/components/ui/button"
 import { GlassCard } from "@/components/ui/glass-card"
-import { Check, Download, ArrowRight, X, Mail, Key } from "lucide-react"
+import { Check, Download, ArrowRight, X, Mail, Key, Upload, Camera, QrCode } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useEffect, useState } from "react"
 import { detectPlatform, getDownloadUrl, Platform, DOWNLOAD_LINKS } from "@/lib/downloads"
@@ -49,6 +49,9 @@ export function PricingSection() {
 
     const [selectedWaNumber, setSelectedWaNumber] = useState<string>("");
     const [waNumbersList, setWaNumbersList] = useState<string[]>([]);
+    const [step, setStep] = useState(1);
+    const [receipt, setReceipt] = useState<File | null>(null);
+    const [receiptPreview, setReceiptPreview] = useState<string | null>(null);
 
     useEffect(() => {
         setPlatform(detectPlatform());
@@ -73,7 +76,22 @@ export function PricingSection() {
             alert("Harap isi Email dan Device Key Anda.");
             return;
         }
+        setStep(2);
+    };
 
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setReceipt(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setReceiptPreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleFinalizePayment = async () => {
         setLoading(true);
         try {
             const refId = getStoredReferral();
@@ -81,13 +99,15 @@ export function PricingSection() {
 
             const waNumber = selectedWaNumber || waNumbersList[0] || "6287768653387";
             const message = `Halo Admin Scriptora! Saya ingin aktivasi Pro License.
-            
+
 Email: ${customerEmail}
 Device Key: ${deviceKey}
 Referral ID: ${refId || 'direct'}
 Affiliate ID: ${affiliateId}
 
-Mohon instruksi untuk pembayarannya.`;
+[SAYA SUDAH BAYAR & AKAN MELAMPIRKAN BUKTI DI CHAT INI]
+
+Mohon instruksi untuk selanjutnya.`;
 
             const encodedMessage = encodeURIComponent(message);
             const waUrl = `https://wa.me/${waNumber}?text=${encodedMessage}`;
@@ -106,6 +126,9 @@ Mohon instruksi untuk pembayarannya.`;
 
             window.open(waUrl, '_blank');
             setShowModal(false);
+            setStep(1);
+            setReceipt(null);
+            setReceiptPreview(null);
         } catch (error) {
             console.error('[Pricing] WhatsApp Redirect Error:', error);
             alert("Gagal menghubungkan ke WhatsApp. Silakan coba lagi.");
@@ -254,75 +277,159 @@ Mohon instruksi untuk pembayarannya.`;
                                     <p className="text-sm text-muted-foreground">Silakan isi data berikut untuk menerima lisensi otomatis.</p>
                                 </div>
 
-                                <form onSubmit={processCheckout} className="space-y-6">
-                                    <div className="space-y-2">
-                                        <label className="text-xs font-bold uppercase tracking-wider text-primary/80">Email Penerima</label>
-                                        <div className="relative">
-                                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
-                                            <input
-                                                required
-                                                type="email"
-                                                placeholder="nama@email.com"
-                                                value={customerEmail}
-                                                onChange={(e) => setCustomerEmail(e.target.value)}
-                                                className="w-full bg-white/[0.03] border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white focus:border-primary/50 focus:ring-1 focus:ring-primary/50 outline-none transition-all placeholder:text-white/20"
-                                            />
-                                        </div>
-                                    </div>
+                                <AnimatePresence mode="wait">
+                                    {step === 1 ? (
+                                        <motion.form
+                                            key="step1"
+                                            initial={{ opacity: 0, x: -20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            exit={{ opacity: 0, x: 20 }}
+                                            onSubmit={processCheckout}
+                                            className="space-y-6"
+                                        >
+                                            <div className="space-y-2">
+                                                <label className="text-xs font-bold uppercase tracking-wider text-primary/80">Email Penerima</label>
+                                                <div className="relative">
+                                                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+                                                    <input
+                                                        required
+                                                        type="email"
+                                                        placeholder="nama@email.com"
+                                                        value={customerEmail}
+                                                        onChange={(e) => setCustomerEmail(e.target.value)}
+                                                        className="w-full bg-white/[0.03] border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white focus:border-primary/50 focus:ring-1 focus:ring-primary/50 outline-none transition-all placeholder:text-white/20"
+                                                    />
+                                                </div>
+                                            </div>
 
-                                    <div className="space-y-2">
-                                        <label className="text-xs font-bold uppercase tracking-wider text-primary/80">Public Device Key</label>
-                                        <div className="relative">
-                                            <Key className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
-                                            <input
-                                                required
-                                                type="text"
-                                                placeholder="Copy dari aplikasi Scriptora"
-                                                value={deviceKey}
-                                                onChange={(e) => setDeviceKey(e.target.value)}
-                                                className="w-full bg-white/[0.03] border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white focus:border-primary/50 focus:ring-1 focus:ring-primary/50 outline-none transition-all placeholder:text-white/20"
-                                            />
-                                        </div>
-                                        <p className="text-[10px] text-muted-foreground leading-relaxed">
-                                            *Dapatkan di aplikasi: <strong>Output &rarr; Free &rarr; Copy Public Key</strong>
-                                        </p>
-                                    </div>
+                                            <div className="space-y-2">
+                                                <label className="text-xs font-bold uppercase tracking-wider text-primary/80">Public Device Key</label>
+                                                <div className="relative">
+                                                    <Key className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+                                                    <input
+                                                        required
+                                                        type="text"
+                                                        placeholder="Copy dari aplikasi Scriptora"
+                                                        value={deviceKey}
+                                                        onChange={(e) => setDeviceKey(e.target.value)}
+                                                        className="w-full bg-white/[0.03] border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white focus:border-primary/50 focus:ring-1 focus:ring-primary/50 outline-none transition-all placeholder:text-white/20"
+                                                    />
+                                                </div>
+                                                <p className="text-[10px] text-muted-foreground leading-relaxed">
+                                                    *Dapatkan di aplikasi: <strong>Output &rarr; Free &rarr; Copy Public Key</strong>
+                                                </p>
+                                            </div>
 
-                                    <div className="space-y-2">
-                                        <label className="text-xs font-bold uppercase tracking-wider text-primary/80">Pilih Jalur Support</label>
-                                        <div className="grid grid-cols-2 gap-3">
-                                            {waNumbersList.map((num, idx) => (
-                                                <button
-                                                    key={idx}
-                                                    type="button"
-                                                    onClick={() => setSelectedWaNumber(num)}
-                                                    className={cn(
-                                                        "py-2 px-3 rounded-xl border text-[10px] font-bold transition-all",
-                                                        selectedWaNumber === num
-                                                            ? "bg-primary/20 border-primary text-primary shadow-[0_0_15px_rgba(138,46,255,0.2)]"
-                                                            : "bg-white/[0.03] border-white/10 text-white/40 hover:border-white/20"
-                                                    )}
-                                                >
-                                                    Support Admin {idx + 1}
-                                                </button>
-                                            ))}
-                                        </div>
-                                    </div>
+                                            <div className="space-y-2">
+                                                <label className="text-xs font-bold uppercase tracking-wider text-primary/80">Pilih Jalur Support</label>
+                                                <div className="grid grid-cols-2 gap-3">
+                                                    {waNumbersList.map((num, idx) => (
+                                                        <button
+                                                            key={idx}
+                                                            type="button"
+                                                            onClick={() => setSelectedWaNumber(num)}
+                                                            className={cn(
+                                                                "py-2 px-3 rounded-xl border text-[10px] font-bold transition-all",
+                                                                selectedWaNumber === num
+                                                                    ? "bg-primary/20 border-primary text-primary shadow-[0_0_15px_rgba(138,46,255,0.2)]"
+                                                                    : "bg-white/[0.03] border-white/10 text-white/40 hover:border-white/20"
+                                                            )}
+                                                        >
+                                                            Support Admin {idx + 1}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </div>
 
-                                    <Button
-                                        type="submit"
-                                        variant="glow"
-                                        className="w-full py-6 rounded-xl text-lg group font-bold"
-                                        disabled={loading}
-                                    >
-                                        {loading ? "Memproses..." : (
-                                            <>
-                                                Bayar Sekarang (Rp 249K)
+                                            <Button
+                                                type="submit"
+                                                variant="glow"
+                                                className="w-full py-6 rounded-xl text-lg group font-bold"
+                                            >
+                                                Lanjut ke Pembayaran
                                                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                                            </>
-                                        )}
-                                    </Button>
-                                </form>
+                                            </Button>
+                                        </motion.form>
+                                    ) : (
+                                        <motion.div
+                                            key="step2"
+                                            initial={{ opacity: 0, x: 20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            exit={{ opacity: 0, x: -20 }}
+                                            className="space-y-6"
+                                        >
+                                            <div className="bg-white/5 rounded-2xl p-4 border border-white/10">
+                                                <div className="flex items-center gap-3 mb-4">
+                                                    <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                                                        <QrCode className="w-4 h-4 text-primary" />
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-xs font-bold uppercase tracking-widest text-primary">Scan QRIS</p>
+                                                        <p className="text-[10px] text-muted-foreground uppercase">GOPAY / OVO / DANA / MOBILE BANKING</p>
+                                                    </div>
+                                                </div>
+                                                <div className="aspect-square w-full max-w-[200px] mx-auto bg-white rounded-xl p-2 mb-4">
+                                                    <img src="/qris.png" alt="QRIS Scriptora" className="w-full h-full object-contain" />
+                                                </div>
+                                                <div className="text-center">
+                                                    <p className="text-xs text-muted-foreground mb-1">Total Bayar</p>
+                                                    <p className="text-2xl font-bold text-white">Rp 249.000</p>
+                                                </div>
+                                            </div>
+
+                                            <div className="space-y-3">
+                                                <label className="text-xs font-bold uppercase tracking-wider text-primary/80">Upload Bukti Bayar</label>
+                                                <div className="relative">
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        onChange={handleFileChange}
+                                                        className="hidden"
+                                                        id="receipt-upload"
+                                                    />
+                                                    <label
+                                                        htmlFor="receipt-upload"
+                                                        className="flex flex-col items-center justify-center w-full aspect-video rounded-xl border-2 border-dashed border-white/10 bg-white/[0.02] hover:bg-white/[0.05] hover:border-primary/50 transition-all cursor-pointer overflow-hidden group"
+                                                    >
+                                                        {receiptPreview ? (
+                                                            <img src={receiptPreview} alt="Receipt Preview" className="w-full h-full object-cover" />
+                                                        ) : (
+                                                            <div className="flex flex-col items-center gap-2">
+                                                                <Camera className="w-8 h-8 text-white/20 group-hover:text-primary transition-colors" />
+                                                                <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">Pilih Gambar</span>
+                                                            </div>
+                                                        )}
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div className="space-y-3">
+                                                <Button
+                                                    onClick={handleFinalizePayment}
+                                                    variant="glow"
+                                                    className="w-full py-6 rounded-xl text-lg group font-bold"
+                                                    disabled={loading || !receipt}
+                                                >
+                                                    {loading ? "Memproses..." : (
+                                                        <>
+                                                            Kirim ke WhatsApp
+                                                            <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                                        </>
+                                                    )}
+                                                </Button>
+                                                <button
+                                                    onClick={() => setStep(1)}
+                                                    className="w-full text-xs text-muted-foreground hover:text-white transition-colors"
+                                                >
+                                                    &larr; Kembali ke Data Diri
+                                                </button>
+                                                <p className="text-[9px] text-center text-muted-foreground leading-relaxed italic">
+                                                    *Pastikan Anda melampirkan foto bukti transfer secara manual di chat WhatsApp setelah klik tombol di atas.
+                                                </p>
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
                             </GlassCard>
                         </motion.div>
                     </div>
