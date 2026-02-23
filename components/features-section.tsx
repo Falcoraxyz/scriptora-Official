@@ -1,39 +1,132 @@
+"use client"
+
 import { GlassCard } from "@/components/ui/glass-card"
-import { Button } from "@/components/ui/button"
-import { Bot, Quote, Eye, ListTree, Image as ImageIcon, Sparkles, ArrowRight } from "lucide-react"
+import { Bot, ListTree, Eye, Quote, Image as ImageIcon, Layers, BookOpen, Paperclip, StickyNote, Settings, Sparkles, Check } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { motion } from "framer-motion"
+import { useState } from "react"
 
 const features = [
     {
         title: "Integrated AI Research Hub",
         desc: "Stop tab-switching. Search scientific papers across Perplexity, Consensus, Elicit, and Google Scholar in a unified workspace designed for academic rigor.",
         icon: Bot,
-        image: "/screenshots/AI Dashboard.png"
+        images: ["/screenshots/AI Dashboard.png"],
+        highlights: [
+            "Multi-engine search in one panel",
+            "Built-in paper summarizer",
+            "Direct citation insertion from results",
+            "Academic source verification"
+        ]
     },
     {
         title: "Smart Citation Engine",
         desc: "Mendeley-level intelligence. Search and insert citations with APA 7 or IEEE standards instantly. Scriptora handles the formatting so you can focus on the content.",
         icon: ListTree,
-        image: "/screenshots/UI Citation.png"
+        images: ["/screenshots/UI Citation.png", "/screenshots/Halaman Bibliography Manager.png"],
+        highlights: [
+            "Import from DOI, PDF, or BibTeX",
+            "Auto-format APA 7 & IEEE",
+            "6-layer citation validation pipeline",
+            "Groups & Tags for organization"
+        ]
     },
     {
         title: "Live Academic Preview",
-        desc: "See your thesis as it will appear in print. Real-time rendering with 4-4-3-3 margins, Times New Roman 12pt, and perfect line spacing built into the core.",
+        desc: "See your thesis as it will appear in print. Real-time rendering with 4-4-3-3 margins, Times New Roman 12pt, and perfect 1.5 line spacing built into the core.",
         icon: Eye,
-        image: "/screenshots/halaman Live Document Preview.png"
+        images: ["/screenshots/halaman Live Document Preview.png"],
+        highlights: [
+            "WYSIWYG real-time rendering",
+            "Standard academic margin preset",
+            "TNR 12pt with 1.5 line spacing",
+            "Instant chapter navigation"
+        ]
     },
     {
         title: "Premium DOCX Pipeline",
         desc: "The only IDE that exports a 'Ready to Submit' DOCX. Automatic Table of Contents, List of Figures, and Roman numeral sectioning with one click.",
         icon: Quote,
-        image: "/screenshots/Halaman Export.png"
+        images: ["/screenshots/Halaman Export.png"],
+        highlights: [
+            "One-click professional DOCX export",
+            "Auto-generated TOC & List of Figures",
+            "Roman + Arabic page numbering",
+            "PDF export via Word automation"
+        ],
+        badge: "PRO"
     },
     {
         title: "Smart Asset Management",
         desc: "Centralized management for Figures, Tables, and Equations. Drag, drop, and auto-number your assets while maintaining strict academic labeling standards.",
         icon: ImageIcon,
-        image: "/screenshots/UI insert Gambar.png"
+        images: ["/screenshots/UI insert Gambar.png", "/screenshots/UI Insert Tabel.png", "/screenshots/UI Insert Equation.png"],
+        highlights: [
+            "Figures with auto-captioning",
+            "Tables with header row support",
+            "LaTeX equations → MathML export",
+            "Academic auto-numbering (Gambar 1, Tabel 2...)"
+        ]
+    },
+    {
+        title: "5-Zone Document Architecture",
+        desc: "A smart zone system that automatically manages page numbering across your entire document — from Cover to Appendix, each zone gets its own rules.",
+        icon: Layers,
+        images: ["/screenshots/Settingan nomor halaman Untuk setiap Zone.png"],
+        highlights: [
+            "Zone 1: Cover (No page number)",
+            "Zone 2: Preliminaries (Roman: i, ii, iii)",
+            "Zone 3: Content (Arabic: 1, 2, 3)",
+            "Zone 4-5: Appendix & Special Pages"
+        ]
+    },
+    {
+        title: "Auto-Generated Lists",
+        desc: "Automatically generate Abbreviation Lists, Symbol Lists, and Glossaries. No more manual tables — Scriptora builds them from your entries and exports perfectly.",
+        icon: BookOpen,
+        images: ["/screenshots/List untuk Daftar Pustaka dll.png", "/screenshots/Halaman Dokumen List.png"],
+        highlights: [
+            "Daftar Singkatan (Abbreviations)",
+            "Daftar Simbol (Symbols)",
+            "Glosarium (Glossary)",
+            "Exported as formatted DOCX sections"
+        ]
+    },
+    {
+        title: "Appendix Manager",
+        desc: "Manage your thesis appendices with centralized auto-numbering and caption support. Upload documents, images, or write content — all organized in one panel.",
+        icon: Paperclip,
+        images: ["/screenshots/UI insert Lampiran.png"],
+        highlights: [
+            "Auto-numbered Lampiran 1, 2, 3...",
+            "Support for images & text content",
+            "Centralized caption management",
+            "Exported with proper formatting"
+        ]
+    },
+    {
+        title: "Quick Notes & Drafting",
+        desc: "A side panel for brainstorming and drafting ideas before they become part of your thesis body. Supports citation autocomplete so you never lose a reference.",
+        icon: StickyNote,
+        images: ["/screenshots/Tampilan Notes.png"],
+        highlights: [
+            "Side-panel quick notes",
+            "Citation autocomplete ({{cite:key}})",
+            "Per-project note storage",
+            "Drag ideas into your main editor"
+        ]
+    },
+    {
+        title: "Guided Setup Wizard",
+        desc: "Start your thesis in under 60 seconds. Choose a template (Skripsi, Tesis, Makalah, Proposal), fill in your metadata, and Scriptora builds the entire document structure for you.",
+        icon: Settings,
+        images: ["/screenshots/Tampilan Setup.png", "/screenshots/wizard setup.png"],
+        highlights: [
+            "Template selection (Skripsi, Tesis, etc.)",
+            "Metadata auto-fill (Nama, NIM, Judul)",
+            "University preset formatting",
+            "Structure generated in seconds"
+        ]
     }
 ]
 
@@ -43,69 +136,140 @@ export function FeaturesSection() {
             {/* Background Decoration */}
             <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -translate-x-1/2 -z-10" />
 
+            {/* Section Header */}
+            <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="container px-4 mx-auto text-center mb-24"
+            >
+                <div className="inline-flex items-center rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-primary mb-6">
+                    <Sparkles className="w-3 h-3 mr-2" />
+                    10 Powerful Features
+                </div>
+                <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tighter mb-4">
+                    Everything You Need to <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#8A2EFF] to-[#B57CFF]">Graduate.</span>
+                </h2>
+                <p className="text-lg text-muted-foreground/70 max-w-2xl mx-auto">
+                    From your first draft to the final submission, Scriptora handles every detail of academic writing.
+                </p>
+            </motion.div>
+
             <div className="container px-4 mx-auto space-y-40">
                 {features.map((f, i) => (
-                    <motion.div
-                        key={i}
-                        initial={{ opacity: 0, y: 50 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, margin: "-150px" }}
-                        transition={{ duration: 0.8, ease: "easeOut" }}
-                        className={cn(
-                            "flex flex-col md:flex-row gap-16 items-center",
-                            i % 2 === 1 ? 'md:flex-row-reverse' : ''
-                        )}
-                    >
-                        <div className="flex-1 space-y-8">
-                            <motion.div
-                                initial={{ scale: 0.8, opacity: 0 }}
-                                whileInView={{ scale: 1, opacity: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: 0.2 }}
-                                className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center border border-primary/20 shadow-[0_0_40px_rgba(138,46,255,0.2)] group-hover:shadow-[0_0_60px_rgba(138,46,255,0.4)] transition-all duration-500"
-                            >
-                                <f.icon className="w-8 h-8 text-primary group-hover:scale-110 transition-transform" />
-                            </motion.div>
-
-                            <div className="space-y-4">
-                                <h3 className="text-4xl md:text-5xl font-heading font-black tracking-tighter flex items-center gap-4">
-                                    {f.title}
-                                    {f.title.includes("DOCX") && (
-                                        <span className="text-[10px] bg-primary/20 text-primary border border-primary/30 px-3 py-1 rounded-full uppercase tracking-[0.2em] font-black shadow-[0_0_20px_rgba(138,46,255,0.3)]">PRO</span>
-                                    )}
-                                </h3>
-                                <p className="text-xl text-muted-foreground/80 leading-relaxed font-medium max-w-xl">
-                                    {f.desc}
-                                </p>
-                            </div>
-
-                            <Button variant="ghost" className="rounded-full border border-white/5 hover:bg-primary/5 hover:border-primary/20 transition-all text-xs uppercase tracking-widest font-bold px-6 h-10 group">
-                                Learn More <ArrowRight className="ml-2 w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                            </Button>
-                        </div>
-
-                        <div className="flex-1 w-full relative">
-                            <GlassCard className="aspect-[4/3] flex items-center justify-center bg-gradient-to-br from-white/[0.05] via-transparent to-primary/[0.02] relative overflow-hidden group border-white/10 p-2 shadow-2xl">
-                                <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-2xl" />
-                                <div className="relative z-10 w-full flex justify-center p-2 md:p-6 transition-transform duration-700 group-hover:scale-[1.02] group-hover:-rotate-1">
-                                    <img
-                                        src={f.image}
-                                        alt={f.title}
-                                        className="rounded-xl shadow-2xl border border-white/10 group-hover:border-primary/30 transition-all duration-700"
-                                    />
-                                </div>
-                                <div className="absolute bottom-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                                    <div className="bg-primary/20 backdrop-blur-md border border-primary/30 rounded-full p-2">
-                                        <Sparkles className="w-4 h-4 text-primary animate-pulse" />
-                                    </div>
-                                </div>
-                            </GlassCard>
-                            {/* Decorative Glow */}
-                            <div className="absolute -inset-4 bg-primary/5 blur-3xl rounded-full -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                        </div>
-                    </motion.div>
+                    <FeatureBlock key={i} feature={f} index={i} />
                 ))}
             </div>
         </section>
+    )
+}
+
+interface FeatureData {
+    title: string
+    desc: string
+    icon: React.ElementType
+    images: string[]
+    highlights: string[]
+    badge?: string
+}
+
+function FeatureBlock({ feature: f, index: i }: { feature: FeatureData, index: number }) {
+    const [activeImg, setActiveImg] = useState(0)
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+            className={cn(
+                "flex flex-col md:flex-row gap-16 items-center",
+                i % 2 === 1 ? 'md:flex-row-reverse' : ''
+            )}
+        >
+            {/* Text Content */}
+            <div className="flex-1 space-y-6">
+                <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    whileInView={{ scale: 1, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.2 }}
+                    className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center border border-primary/20 shadow-[0_0_30px_rgba(138,46,255,0.15)]"
+                >
+                    <f.icon className="w-7 h-7 text-primary" />
+                </motion.div>
+
+                <div className="space-y-3">
+                    <h3 className="text-3xl md:text-4xl font-heading font-black tracking-tighter flex items-center gap-3 flex-wrap">
+                        {f.title}
+                        {f.badge && (
+                            <span className="text-[10px] bg-primary/20 text-primary border border-primary/30 px-3 py-1 rounded-full uppercase tracking-[0.2em] font-black shadow-[0_0_20px_rgba(138,46,255,0.3)]">{f.badge}</span>
+                        )}
+                    </h3>
+                    <p className="text-lg text-muted-foreground/80 leading-relaxed font-medium max-w-xl">
+                        {f.desc}
+                    </p>
+                </div>
+
+                {/* Highlights replacing "Learn More" */}
+                <div className="space-y-2.5 pt-2">
+                    {f.highlights.map((h, j) => (
+                        <motion.div
+                            key={j}
+                            initial={{ opacity: 0, x: -10 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.3 + j * 0.1 }}
+                            className="flex items-center gap-3 text-sm text-white/70"
+                        >
+                            <div className="w-5 h-5 rounded-full bg-primary/15 flex items-center justify-center shrink-0">
+                                <Check className="w-3 h-3 text-primary" />
+                            </div>
+                            {h}
+                        </motion.div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Image Gallery */}
+            <div className="flex-1 w-full relative">
+                <GlassCard className="aspect-[4/3] flex items-center justify-center bg-gradient-to-br from-white/[0.05] via-transparent to-primary/[0.02] relative overflow-hidden group border-white/10 p-2 shadow-2xl">
+                    <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-2xl" />
+                    <div className="relative z-10 w-full flex justify-center p-2 md:p-6 transition-transform duration-700 group-hover:scale-[1.02]">
+                        <img
+                            src={f.images[activeImg]}
+                            alt={f.title}
+                            className="rounded-xl shadow-2xl border border-white/10 group-hover:border-primary/30 transition-all duration-700"
+                        />
+                    </div>
+
+                    {/* Multi-image indicator */}
+                    {f.images.length > 1 && (
+                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+                            {f.images.map((_, idx) => (
+                                <button
+                                    key={idx}
+                                    onClick={() => setActiveImg(idx)}
+                                    className={cn(
+                                        "w-2 h-2 rounded-full transition-all duration-300",
+                                        activeImg === idx
+                                            ? "bg-primary w-6 shadow-[0_0_10px_rgba(138,46,255,0.5)]"
+                                            : "bg-white/20 hover:bg-white/40"
+                                    )}
+                                />
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Sparkle on hover */}
+                    <div className="absolute bottom-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        <div className="bg-primary/20 backdrop-blur-md border border-primary/30 rounded-full p-2">
+                            <Sparkles className="w-4 h-4 text-primary animate-pulse" />
+                        </div>
+                    </div>
+                </GlassCard>
+            </div>
+        </motion.div>
     )
 }
