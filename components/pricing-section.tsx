@@ -179,7 +179,7 @@ Mohon instruksi untuk selanjutnya.`;
                 className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto relative mb-20"
             >
                 {plans.map((p, i) => (
-                    <motion.div variants={cardVariants}>
+                    <motion.div key={i} variants={cardVariants}>
                         <GlassCard className={cn(
                             "flex flex-col h-full relative p-8 transition-all duration-500 hover:shadow-[0_0_80px_rgba(138,46,255,0.15)]",
                             p.popular ? "border-primary/50 bg-[#140A1F]/80 shadow-[0_0_50px_rgba(138,46,255,0.1)]" : "border-white/10"
