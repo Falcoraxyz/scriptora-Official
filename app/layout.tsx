@@ -21,11 +21,6 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className={cn(inter.variable, sora.variable, "font-sans antialiased min-h-screen bg-gradient-to-br from-[#0B0613] via-[#140A1F] to-[#0A0412]")}>
         {children}
-        <Script
-          src="https://app.sandbox.midtrans.com/snap/snap.js"
-          data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}
-          strategy="beforeInteractive"
-        />
       </body>
     </html>
   );

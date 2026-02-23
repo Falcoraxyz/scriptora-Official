@@ -13,7 +13,7 @@ export function ProblemSection() {
         <section className="py-24 relative overflow-hidden">
             <div className="container px-4 mx-auto">
                 <h2 className="text-3xl md:text-4xl font-heading font-bold text-center mb-16">
-                    Writing Academic Papers Shouldn’t <br /> Feel Like <span className="text-red-400">Fighting Word</span>
+                    Writing Academic Papers Shouldn’t <br /> Feel Like <span className="text-red-400">Fighting Microsoft Word</span>
                 </h2>
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {problems.map((p, i) => (

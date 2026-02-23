@@ -47,8 +47,16 @@ export function PricingSection() {
     const [customerEmail, setCustomerEmail] = useState("");
     const [deviceKey, setDeviceKey] = useState("");
 
+    const [selectedWaNumber, setSelectedWaNumber] = useState<string>("");
+    const [waNumbersList, setWaNumbersList] = useState<string[]>([]);
+
     useEffect(() => {
         setPlatform(detectPlatform());
+
+        const waEnv = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "6287768653387,6281958860338";
+        const list = waEnv.split(',').map(n => n.trim());
+        setWaNumbersList(list);
+        if (list.length > 0) setSelectedWaNumber(list[0]);
     }, []);
 
     const handleAction = (action: string) => {
@@ -69,53 +77,38 @@ export function PricingSection() {
         setLoading(true);
         try {
             const refId = getStoredReferral();
+            const affiliateId = refId ? await getAffiliateIdFromRef(refId) : 'direct';
 
-            // 1. Get Snap Token from our API
-            const response = await fetch('/api/checkout', {
+            const waNumber = selectedWaNumber || waNumbersList[0] || "6287768653387";
+            const message = `Halo Admin Scriptora! Saya ingin aktivasi Pro License.
+            
+Email: ${customerEmail}
+Device Key: ${deviceKey}
+Referral ID: ${refId || 'direct'}
+Affiliate ID: ${affiliateId}
+
+Mohon instruksi untuk pembayarannya.`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const waUrl = `https://wa.me/${waNumber}?text=${encodedMessage}`;
+
+            // Track potential sale before redirecting
+            await fetch('/api/checkout/manual', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    amount: 249000,
-                    refId: refId || 'direct',
-                    affiliateId: refId ? await getAffiliateIdFromRef(refId) : null,
                     email: customerEmail,
-                    deviceKey: deviceKey
+                    deviceKey: deviceKey,
+                    refId: refId || 'direct',
+                    affiliateId: affiliateId
                 })
-            });
+            }).catch(err => console.error("Tracking error:", err));
 
-            const data = await response.json();
-            const token = data.token;
-
-            if (!token) {
-                console.error('[Pricing] No token received:', data);
-                alert("Gagal mendapatkan kode pembayaran. Pastikan Server Key & Client Key di .env.local sudah benar.");
-                return;
-            }
-
-            // 2. Open Snap Popup
-            if (window.snap) {
-                setShowModal(false);
-                window.snap.pay(token, {
-                    onSuccess: (result: any) => {
-                        console.log('Payment Success:', result);
-                        alert("Pembayaran Berhasil! Lisensi akan dikirim ke email: " + customerEmail);
-                    },
-                    onPending: (result: any) => {
-                        console.log('Payment Pending:', result);
-                        alert("Menunggu pembayaran...");
-                    },
-                    onError: (result: any) => {
-                        console.error('Payment Error:', result);
-                        alert("Terjadi kesalahan pada pembayaran.");
-                    },
-                    onClose: () => {
-                        console.log('Snap Popup Closed');
-                    }
-                });
-            }
+            window.open(waUrl, '_blank');
+            setShowModal(false);
         } catch (error) {
-            console.error('[Pricing] Checkout Error:', error);
-            alert("Gagal memproses pembayaran. Silakan coba lagi.");
+            console.error('[Pricing] WhatsApp Redirect Error:', error);
+            alert("Gagal menghubungkan ke WhatsApp. Silakan coba lagi.");
         } finally {
             setLoading(false);
         }
@@ -293,6 +286,28 @@ export function PricingSection() {
                                         <p className="text-[10px] text-muted-foreground leading-relaxed">
                                             *Dapatkan di aplikasi: <strong>Output &rarr; Free &rarr; Copy Public Key</strong>
                                         </p>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold uppercase tracking-wider text-primary/80">Pilih Jalur Support</label>
+                                        <div className="grid grid-cols-2 gap-3">
+                                            {waNumbersList.map((num, idx) => (
+                                                <button
+                                                    key={idx}
+                                                    type="button"
+                                                    onClick={() => setSelectedWaNumber(num)}
+                                                    className={cn(
+                                                        "py-2 px-3 rounded-xl border text-[10px] font-bold transition-all",
+                                                        selectedWaNumber === num
+                                                            ? "bg-primary/20 border-primary text-primary shadow-[0_0_15px_rgba(138,46,255,0.2)]"
+                                                            : "bg-white/[0.03] border-white/10 text-white/40 hover:border-white/20"
+                                                    )}
+                                                >
+                                                    Support Admin {idx + 1}
+                                                    <div className="text-[8px] opacity-60 mt-0.5">{num}</div>
+                                                </button>
+                                            ))}
+                                        </div>
                                     </div>
 
                                     <Button
