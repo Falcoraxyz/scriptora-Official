@@ -3,16 +3,22 @@ const R2_DOMAIN = "https://pub-5828d30887e24495b12cb23763000110.r2.dev";
 export const DOWNLOAD_VERSIONS = {
     windows: [
         { label: "Windows Setup (EXE)", link: `${R2_DOMAIN}/Scriptora_1.0.2_x64-setup.exe`, type: "Recommended" },
+        { label: "Update Patch v1.0.2.1 (EXE)", link: `${R2_DOMAIN}/update%201.0.2.1/Scriptora_1.0.2_x64-setup.exe`, type: "Update" },
         { label: "Windows Installer (MSI)", link: `${R2_DOMAIN}/Scriptora_1.0.2_x64_en-US.msi`, type: "Enterprise" },
+        { label: "Update Patch v1.0.2.1 (MSI)", link: `${R2_DOMAIN}/update%201.0.2.1/Scriptora_1.0.2_x64_en-US1.msi`, type: "Update" },
     ],
     macos: [
         { label: "macOS Apple Silicon (M1/M2/M3)", link: `${R2_DOMAIN}/Scriptora_1.0.2_aarch64.dmg`, type: "Recommended" },
+        { label: "Update Patch v1.0.2.1 (Apple Silicon)", link: `${R2_DOMAIN}/update%201.0.2.1/Scriptora_1.0.2_aarch64.dmg`, type: "Update" },
         { label: "macOS Intel", link: `${R2_DOMAIN}/Scriptora_1.0.2_x64.dmg`, type: "Legacy" },
+        { label: "Update Patch v1.0.2.1 (Intel)", link: `${R2_DOMAIN}/update%201.0.2.1/Scriptora_1.0.2_x64.dmg`, type: "Update" },
     ],
     linux: [
         { label: "Linux Debian/Ubuntu (DEB)", link: `${R2_DOMAIN}/Scriptora_1.0.2_amd64.deb`, type: "Recommended" },
+        { label: "Update Patch v1.0.2.1 (DEB)", link: `${R2_DOMAIN}/update%201.0.2.1/Scriptora_1.0.2_amd64.deb`, type: "Update" },
         { label: "Linux AppImage", link: `${R2_DOMAIN}/Scriptora_1.0.2_amd64.AppImage`, type: "Portable" },
         { label: "Linux RPM (Fedora/RedHat)", link: `${R2_DOMAIN}/Scriptora-1.0.2-1.x86_64.rpm`, type: "Standard" },
+        { label: "Update Patch v1.0.2.1 (RPM)", link: `${R2_DOMAIN}/update%201.0.2.1/Scriptora-1.0.2-1.x86_64.rpm`, type: "Update" },
     ]
 };
 

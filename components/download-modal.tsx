@@ -77,18 +77,18 @@ export function DownloadModal({ isOpen, onClose, platform }: DownloadModalProps)
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ delay: i * 0.1 }}
-                                        className="flex items-center justify-between p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-primary/5 transition-all group"
+                                        className={`flex items-center justify-between p-4 rounded-2xl bg-white/5 border border-white/10 transition-all group ${v.type === 'Update' ? 'hover:border-purple-500/50 hover:bg-purple-500/5 mt-1' : 'hover:border-primary/50 hover:bg-primary/5'}`}
                                     >
                                         <div className="flex items-center gap-4">
-                                            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform ${v.type === 'Update' ? 'bg-purple-500/10 text-purple-400' : 'bg-primary/10 text-primary'}`}>
                                                 <Download className="w-5 h-5" />
                                             </div>
                                             <div className="text-left">
-                                                <div className="text-sm font-bold text-white group-hover:text-primary transition-colors">{v.label}</div>
-                                                <div className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">{v.type}</div>
+                                                <div className={`text-sm font-bold text-white transition-colors ${v.type === 'Update' ? 'group-hover:text-purple-400' : 'group-hover:text-primary'}`}>{v.label}</div>
+                                                <div className={`text-[10px] uppercase tracking-widest font-bold ${v.type === 'Update' ? 'text-purple-400/70' : 'text-muted-foreground'}`}>{v.type}</div>
                                             </div>
                                         </div>
-                                        <MousePointer2 className="w-4 h-4 text-white/20 group-hover:text-primary transition-all group-hover:translate-x-1" />
+                                        <MousePointer2 className={`w-4 h-4 transition-all group-hover:translate-x-1 ${v.type === 'Update' ? 'text-white/20 group-hover:text-purple-400' : 'text-white/20 group-hover:text-primary'}`} />
                                     </motion.a>
                                 ))}
                             </div>
