@@ -1,4 +1,4 @@
-const R2_DOMAIN = "https://pub-28682974b6204481846b0a88099238e2.r2.dev";
+const R2_DOMAIN = "https://dl.scriptora-official.workers.dev";
 
 export const DOWNLOAD_VERSIONS = {
     windows: [
