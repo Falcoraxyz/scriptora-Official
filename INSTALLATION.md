@@ -2,6 +2,9 @@
 
 Scriptora is 100% safe and malware-free. Because we are an independent developer team, Windows and macOS may show a "Warning" or "Dangerous" message during installation. This is because the app is not yet "digitally signed" with expensive enterprise certificates.
 
+> [!IMPORTANT]
+> **Install Base Version First**: Scriptora does not support automatic updates yet. You must install the **Base Setup** version before applying any **Update Patch**.
+
 Follow these steps to install Scriptora safely.
 
 ---
