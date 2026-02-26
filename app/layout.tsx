@@ -10,6 +10,10 @@ const sora = Sora({ subsets: ["latin"], variable: "--font-sora" });
 export const metadata: Metadata = {
   title: "Scriptora — AI Academic Writing IDE",
   description: "AI-powered academic IDE that structures, formats, cites, and exports your thesis automatically.",
+  icons: {
+    icon: "/icon.png",
+    apple: "/icon.png",
+  },
 };
 
 export default function RootLayout({
