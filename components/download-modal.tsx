@@ -4,7 +4,8 @@ import { X, Download, Monitor, Apple, Laptop, MousePointer2, ShieldCheck, AlertC
 import { GlassCard } from "./ui/glass-card"
 import { Button } from "./ui/button"
 import { DOWNLOAD_VERSIONS, Platform } from "@/lib/downloads"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { createPortal } from "react-dom"
 
 interface DownloadModalProps {
     isOpen: boolean;
@@ -14,6 +15,12 @@ interface DownloadModalProps {
 
 export function DownloadModal({ isOpen, onClose, platform }: DownloadModalProps) {
     const [showGuide, setShowGuide] = useState(false);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
     const activePlatform = platform === 'unknown' ? 'windows' : platform;
     const versions = DOWNLOAD_VERSIONS[activePlatform as keyof typeof DOWNLOAD_VERSIONS] || DOWNLOAD_VERSIONS.windows;
 
@@ -55,7 +62,7 @@ export function DownloadModal({ isOpen, onClose, platform }: DownloadModalProps)
         return null;
     }
 
-    return (
+    const modalContent = (
         <AnimatePresence>
             {isOpen && (
                 <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-6 overflow-hidden">
@@ -182,4 +189,8 @@ export function DownloadModal({ isOpen, onClose, platform }: DownloadModalProps)
             )}
         </AnimatePresence>
     );
+
+    if (!mounted) return null;
+
+    return createPortal(modalContent, document.body);
 }
