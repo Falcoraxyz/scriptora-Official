@@ -6,6 +6,7 @@ import { GlassCard } from "@/components/ui/glass-card"
 import { detectPlatform, getDownloadUrl, Platform, DOWNLOAD_LINKS } from "@/lib/downloads"
 import { useEffect, useState } from "react"
 import { DownloadModal } from "./download-modal"
+import Image from "next/image"
 
 export function Hero() {
     const [platform, setPlatform] = useState<Platform>('unknown');
@@ -144,9 +145,12 @@ export function Hero() {
 
                             {/* Desktop Splash Content */}
                             <div className="relative group overflow-hidden bg-[#0B0613]">
-                                <img
+                                <Image
                                     src="/splash.png"
                                     alt="Scriptora Desktop Splash"
+                                    width={1000}
+                                    height={600}
+                                    priority
                                     className="w-full h-auto object-cover opacity-95 group-hover:opacity-100 transition-all duration-700 rounded-lg"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-[#0B0613] via-transparent to-transparent pointer-events-none" />

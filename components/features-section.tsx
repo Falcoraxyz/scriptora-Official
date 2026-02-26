@@ -5,6 +5,7 @@ import { Bot, ListTree, Eye, Quote, Image as ImageIcon, Layers, BookOpen, Paperc
 import { cn } from "@/lib/utils"
 import { motion } from "framer-motion"
 import { useState } from "react"
+import Image from "next/image"
 
 const features = [
     {
@@ -237,9 +238,12 @@ function FeatureBlock({ feature: f, index: i }: { feature: FeatureData, index: n
                 <GlassCard className="aspect-[4/3] flex items-center justify-center bg-gradient-to-br from-white/[0.05] via-transparent to-primary/[0.02] relative overflow-hidden group border-white/10 p-2 shadow-2xl">
                     <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-2xl" />
                     <div className="relative z-10 w-full flex justify-center p-2 md:p-6 transition-transform duration-700 group-hover:scale-[1.02]">
-                        <img
+                        <Image
                             src={f.images[activeImg]}
                             alt={f.title}
+                            width={800}
+                            height={600}
+                            loading="lazy"
                             className="rounded-xl shadow-2xl border border-white/10 group-hover:border-primary/30 transition-all duration-700"
                         />
                     </div>
