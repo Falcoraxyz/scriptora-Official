@@ -22,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark" suppressHydrationWarning>
       <body className={cn(inter.variable, sora.variable, "font-sans antialiased min-h-screen bg-gradient-to-br from-[#0B0613] via-[#140A1F] to-[#0A0412]")}>
         {children}
       </body>
