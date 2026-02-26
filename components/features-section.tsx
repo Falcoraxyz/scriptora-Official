@@ -3,9 +3,10 @@
 import { GlassCard } from "@/components/ui/glass-card"
 import { Bot, ListTree, Eye, Quote, Image as ImageIcon, Layers, BookOpen, Paperclip, StickyNote, Settings, Sparkles, Check } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { motion } from "framer-motion"
-import { useState } from "react"
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
+import { useState, useRef } from "react"
 import Image from "next/image"
+import { MockupFrame } from "@/components/ui/mockup-frame"
 
 const features = [
     {
@@ -233,46 +234,108 @@ function FeatureBlock({ feature: f, index: i }: { feature: FeatureData, index: n
                 </div>
             </div>
 
-            {/* Image Gallery */}
-            <div className="flex-1 w-full relative">
-                <GlassCard className="aspect-[4/3] flex items-center justify-center bg-gradient-to-br from-white/[0.05] via-transparent to-primary/[0.02] relative overflow-hidden group border-white/10 p-2 shadow-2xl">
-                    <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-2xl" />
-                    <div className="relative z-10 w-full flex justify-center p-2 md:p-6 transition-transform duration-700 group-hover:scale-[1.02]">
-                        <Image
-                            src={f.images[activeImg]}
-                            alt={f.title}
-                            width={800}
-                            height={600}
-                            loading="lazy"
-                            className="rounded-xl shadow-2xl border border-white/10 group-hover:border-primary/30 transition-all duration-700"
-                        />
-                    </div>
+            <div className="flex-1 w-full relative group">
+                {/* 3D Tilt Wrapper */}
+                <TiltWrapper>
+                    <MockupFrame title={f.title} className="shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                        <div className="relative aspect-[4/3] w-full flex items-center justify-center p-2 bg-gradient-to-br from-white/[0.02] to-transparent">
+                            <Image
+                                src={f.images[activeImg]}
+                                alt={f.title}
+                                width={800}
+                                height={600}
+                                loading="lazy"
+                                className="rounded-lg shadow-2xl transition-transform duration-700"
+                            />
 
-                    {/* Multi-image indicator */}
-                    {f.images.length > 1 && (
-                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-                            {f.images.map((_, idx) => (
-                                <button
-                                    key={idx}
-                                    onClick={() => setActiveImg(idx)}
-                                    className={cn(
-                                        "w-2 h-2 rounded-full transition-all duration-300",
-                                        activeImg === idx
-                                            ? "bg-primary w-6 shadow-[0_0_10px_rgba(138,46,255,0.5)]"
-                                            : "bg-white/20 hover:bg-white/40"
-                                    )}
-                                />
-                            ))}
+                            {/* Inner Glow Overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-primary/5 via-transparent to-transparent pointer-events-none" />
                         </div>
-                    )}
 
-                    {/* Sparkle on hover */}
-                    <div className="absolute bottom-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                        <div className="bg-primary/20 backdrop-blur-md border border-primary/30 rounded-full p-2">
-                            <Sparkles className="w-4 h-4 text-primary animate-pulse" />
+                        {/* Pagination for multi-image */}
+                        {f.images.length > 1 && (
+                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+                                {f.images.map((_, idx) => (
+                                    <button
+                                        key={idx}
+                                        onClick={(e) => { e.stopPropagation(); setActiveImg(idx); }}
+                                        className={cn(
+                                            "w-2 h-2 rounded-full transition-all duration-300",
+                                            activeImg === idx
+                                                ? "bg-primary w-6 shadow-[0_0_10px_rgba(138,46,255,0.5)]"
+                                                : "bg-white/20 hover:bg-white/40"
+                                        )}
+                                    />
+                                ))}
+                            </div>
+                        )}
+                    </MockupFrame>
+                </TiltWrapper>
+
+                {/* Floating Elements for depth */}
+                <motion.div
+                    animate={{ y: [0, -10, 0], scale: [1, 1.05, 1] }}
+                    transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute -top-6 -right-6 z-30 pointer-events-none"
+                >
+                    <div className="bg-[#0B0613]/90 backdrop-blur-md border border-primary/30 rounded-xl p-3 px-4 shadow-xl">
+                        <div className="flex items-center gap-2">
+                            <Sparkles className="w-4 h-4 text-primary" />
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-white/80">AI Enhanced</span>
                         </div>
                     </div>
-                </GlassCard>
+                </motion.div>
+
+                {/* Background Glow */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-primary/10 rounded-full blur-[100px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+            </div>
+        </motion.div>
+    )
+}
+
+function TiltWrapper({ children }: { children: React.ReactNode }) {
+    const ref = useRef<HTMLDivElement>(null)
+    const x = useMotionValue(0)
+    const y = useMotionValue(0)
+
+    const mouseXSpring = useSpring(x)
+    const mouseYSpring = useSpring(y)
+
+    const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["7deg", "-7deg"])
+    const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-7deg", "7deg"])
+
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (!ref.current) return
+        const rect = ref.current.getBoundingClientRect()
+        const width = rect.width
+        const height = rect.height
+        const mouseX = e.clientX - rect.left
+        const mouseY = e.clientY - rect.top
+        const xPct = mouseX / width - 0.5
+        const yPct = mouseY / height - 0.5
+        x.set(xPct)
+        y.set(yPct)
+    }
+
+    const handleMouseLeave = () => {
+        x.set(0)
+        y.set(0)
+    }
+
+    return (
+        <motion.div
+            ref={ref}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            style={{
+                rotateX,
+                rotateY,
+                transformStyle: "preserve-3d",
+            }}
+            className="w-full"
+        >
+            <div style={{ transform: "translateZ(75px)", transformStyle: "preserve-3d" }}>
+                {children}
             </div>
         </motion.div>
     )
