@@ -1,24 +1,26 @@
 "use client"
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
-import { ArrowRight, PlayCircle, Download, Bot, Sparkles } from "lucide-react"
+import { ArrowRight, PlayCircle, Download, Bot, Sparkles, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { GlassCard } from "@/components/ui/glass-card"
-import { detectPlatform, getDownloadUrl, Platform, DOWNLOAD_LINKS } from "@/lib/downloads"
+import { detectPlatform, Platform } from "@/lib/downloads"
 import { useEffect, useState } from "react"
 import { DownloadModal } from "./download-modal"
+import { createPortal } from "react-dom"
 import Image from "next/image"
 
 export function Hero() {
     const [platform, setPlatform] = useState<Platform>('unknown');
     const [showDemo, setShowDemo] = useState(false);
     const [showDownload, setShowDownload] = useState(false);
+    const [mounted, setMounted] = useState(false);
 
     const { scrollY } = useScroll();
     const y1 = useTransform(scrollY, [0, 500], [0, 200]);
     const y2 = useTransform(scrollY, [0, 500], [0, -150]);
-    const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
     useEffect(() => {
+        setMounted(true);
         setPlatform(detectPlatform());
     }, []);
 
@@ -54,6 +56,57 @@ export function Hero() {
             transition: { duration: 0.8 }
         }
     };
+
+    const demoModal = (
+        <AnimatePresence>
+            {showDemo && (
+                <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 md:p-10">
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setShowDemo(false)}
+                        className="fixed inset-0 bg-black/90 backdrop-blur-sm cursor-pointer"
+                    />
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                        className="relative w-full max-w-5xl aspect-video bg-[#0B0613] rounded-3xl border border-white/10 overflow-hidden shadow-2xl pointer-events-auto"
+                    >
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => setShowDemo(false)}
+                            className="absolute top-4 right-4 z-10 text-white/50 hover:text-white hover:bg-white/10 rounded-full"
+                        >
+                            <X className="w-6 h-6" />
+                        </Button>
+
+                        <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-12 space-y-6">
+                            <div className="w-20 h-20 bg-primary/20 rounded-3xl flex items-center justify-center mb-4">
+                                <PlayCircle className="w-10 h-10 text-primary" />
+                            </div>
+                            <div className="space-y-2">
+                                <h2 className="text-3xl font-heading font-bold">Demo Video Coming Soon</h2>
+                                <p className="text-muted-foreground max-w-md mx-auto">
+                                    We are currently filming a deep-dive walkthrough of Scriptora v1.0.2. Follow us on X or Discord to be the first to watch!
+                                </p>
+                            </div>
+                            <div className="flex gap-4 pt-4">
+                                <Button variant="outline" className="border-white/10 rounded-full" onClick={() => window.open("https://x.com/silentonmode", "_blank")}>Follow on X</Button>
+                                <Button variant="outline" className="border-white/10 rounded-full" onClick={() => window.open("https://discord.gg/k3eUAHtZtE", "_blank")}>Join Discord</Button>
+                            </div>
+                        </div>
+
+                        {/* Background decoration for modal */}
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px] -z-10" />
+                        <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] -z-10" />
+                    </motion.div>
+                </div>
+            )}
+        </AnimatePresence>
+    );
 
     return (
         <section className="relative min-h-[110vh] flex items-center pt-20 overflow-hidden bg-vibrant-gradient">
@@ -180,60 +233,12 @@ export function Hero() {
                 </motion.div>
             </div>
 
-            {/* Demo Modal */}
-            <AnimatePresence>
-                {showDemo && (
-                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-10">
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            onClick={() => setShowDemo(false)}
-                            className="absolute inset-0 bg-black/90 backdrop-blur-sm"
-                        />
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                            animate={{ opacity: 1, scale: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                            className="relative w-full max-w-5xl aspect-video bg-[#0B0613] rounded-3xl border border-white/10 overflow-hidden shadow-2xl"
-                        >
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={() => setShowDemo(false)}
-                                className="absolute top-4 right-4 z-10 text-white/50 hover:text-white hover:bg-white/10 rounded-full"
-                            >
-                                <Bot className="w-6 h-6 rotate-45" />
-                            </Button>
-
-                            <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-12 space-y-6">
-                                <div className="w-20 h-20 bg-primary/20 rounded-3xl flex items-center justify-center mb-4">
-                                    <PlayCircle className="w-10 h-10 text-primary" />
-                                </div>
-                                <div className="space-y-2">
-                                    <h2 className="text-3xl font-heading font-bold">Demo Video Coming Soon</h2>
-                                    <p className="text-muted-foreground max-w-md mx-auto">
-                                        We are currently filming a deep-dive walkthrough of Scriptora v1.0.2. Follow us on X or Discord to be the first to watch!
-                                    </p>
-                                </div>
-                                <div className="flex gap-4 pt-4">
-                                    <Button variant="outline" className="border-white/10 rounded-full" onClick={() => window.open("https://x.com/silentonmode", "_blank")}>Follow on X</Button>
-                                    <Button variant="outline" className="border-white/10 rounded-full" onClick={() => window.open("https://discord.gg/k3eUAHtZtE", "_blank")}>Join Discord</Button>
-                                </div>
-                            </div>
-
-                            {/* Background decoration for modal */}
-                            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px] -z-10" />
-                            <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] -z-10" />
-                        </motion.div>
-                    </div>
-                )}
-            </AnimatePresence>
             <DownloadModal
                 isOpen={showDownload}
                 onClose={() => setShowDownload(false)}
                 platform={platform}
             />
+            {mounted && createPortal(demoModal, document.body)}
         </section>
     )
 }
