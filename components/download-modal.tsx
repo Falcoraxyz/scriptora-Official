@@ -100,7 +100,7 @@ export function DownloadModal({ isOpen, onClose, platform }: DownloadModalProps)
                             </div>
 
                             {/* Scrollable Content */}
-                            <div className="px-8 pb-8 max-h-[60vh] overflow-y-auto relative z-10 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+                            <div className="px-8 pb-8 max-h-[60vh] overflow-y-auto relative z-10">
                                 <div className="space-y-3">
                                     {versions.map((v: any, i: number) => (
                                         <motion.a

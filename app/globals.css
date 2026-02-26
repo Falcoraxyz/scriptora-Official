@@ -137,3 +137,22 @@
   animation: shimmer 3s linear infinite;
   background-size: 200% 100%;
 }
+
+/* Custom Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(138, 46, 255, 0.5);
+}
