@@ -1,4 +1,4 @@
-const R2_DOMAIN = "https://scriptora-dl.epic24072001.workers.dev";
+const R2_DOMAIN = "https://pub-28682974b6204481846b0a88099238e2.r2.dev";
 
 export const DOWNLOAD_VERSIONS = {
     windows: [
