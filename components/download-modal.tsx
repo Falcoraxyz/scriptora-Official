@@ -58,19 +58,19 @@ export function DownloadModal({ isOpen, onClose, platform }: DownloadModalProps)
     return (
         <AnimatePresence>
             {isOpen && (
-                <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
+                <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-6 overflow-hidden">
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="absolute inset-0 bg-black/80 backdrop-blur-md"
+                        className="fixed inset-0 bg-black/80 backdrop-blur-md cursor-pointer"
                     />
                     <motion.div
                         initial={{ scale: 0.9, opacity: 0, y: 30 }}
                         animate={{ scale: 1, opacity: 1, y: 0 }}
                         exit={{ scale: 0.9, opacity: 0, y: 30 }}
-                        className="relative w-full max-w-lg z-10"
+                        className="w-full max-w-lg relative pointer-events-auto"
                     >
                         <GlassCard className="p-0 border-primary/30 shadow-2xl bg-[#0F0819]/90 relative overflow-hidden">
                             {/* Decorative background glow */}
