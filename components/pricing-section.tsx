@@ -57,7 +57,7 @@ export function PricingSection() {
         setPlatform(detectPlatform());
 
         const waEnv = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "6281958860338";
-        const list = waEnv.split(',').map(n => n.trim());
+        const list = waEnv.split(',').map(n => n.trim()).filter(n => n.endsWith('338')).slice(0, 1);
         setWaNumbersList(list);
         if (list.length > 0) setSelectedWaNumber(list[0]);
     }, []);
