@@ -56,7 +56,7 @@ export function PricingSection() {
     useEffect(() => {
         setPlatform(detectPlatform());
 
-        const waEnv = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "6287768653387,6281958860338";
+        const waEnv = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "6281958860338";
         const list = waEnv.split(',').map(n => n.trim());
         setWaNumbersList(list);
         if (list.length > 0) setSelectedWaNumber(list[0]);
@@ -97,7 +97,7 @@ export function PricingSection() {
             const refId = getStoredReferral();
             const affiliateId = refId ? await getAffiliateIdFromRef(refId) : 'direct';
 
-            const waNumber = selectedWaNumber || waNumbersList[0] || "6287768653387";
+            const waNumber = selectedWaNumber || waNumbersList[0] || "6281958860338";
             const message = `Halo Admin Scriptora! Saya ingin aktivasi Pro License.
 
 Email: ${customerEmail}
@@ -342,26 +342,28 @@ Mohon instruksi untuk selanjutnya.`;
                                                 </p>
                                             </div>
 
-                                            <div className="space-y-2">
-                                                <label className="text-xs font-bold uppercase tracking-wider text-primary/80">Pilih Jalur Support</label>
-                                                <div className="grid grid-cols-2 gap-3">
-                                                    {waNumbersList.map((num, idx) => (
-                                                        <button
-                                                            key={idx}
-                                                            type="button"
-                                                            onClick={() => setSelectedWaNumber(num)}
-                                                            className={cn(
-                                                                "py-2 px-3 rounded-xl border text-[10px] font-bold transition-all",
-                                                                selectedWaNumber === num
-                                                                    ? "bg-primary/20 border-primary text-primary shadow-[0_0_15px_rgba(138,46,255,0.2)]"
-                                                                    : "bg-white/[0.03] border-white/10 text-white/40 hover:border-white/20"
-                                                            )}
-                                                        >
-                                                            Support Admin {idx + 1}
-                                                        </button>
-                                                    ))}
+                                            {waNumbersList.length > 1 && (
+                                                <div className="space-y-2">
+                                                    <label className="text-xs font-bold uppercase tracking-wider text-primary/80">Pilih Jalur Support</label>
+                                                    <div className="grid grid-cols-2 gap-3">
+                                                        {waNumbersList.map((num, idx) => (
+                                                            <button
+                                                                key={idx}
+                                                                type="button"
+                                                                onClick={() => setSelectedWaNumber(num)}
+                                                                className={cn(
+                                                                    "py-2 px-3 rounded-xl border text-[10px] font-bold transition-all",
+                                                                    selectedWaNumber === num
+                                                                        ? "bg-primary/20 border-primary text-primary shadow-[0_0_15px_rgba(138,46,255,0.2)]"
+                                                                        : "bg-white/[0.03] border-white/10 text-white/40 hover:border-white/20"
+                                                                )}
+                                                            >
+                                                                Support Admin {idx + 1}
+                                                            </button>
+                                                        ))}
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            )}
 
                                             <Button
                                                 type="submit"
