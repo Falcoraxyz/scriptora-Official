@@ -147,7 +147,7 @@ export function Hero() {
                             {/* Desktop Splash Content */}
                             <div className="relative group overflow-hidden bg-[#0B0613]">
                                 <Image
-                                    src="/assets/screenshots/webap/desktop splash dark.webp"
+                                    src="/screenshots/desktop-splash-dark.webp"
                                     alt="Scriptora Desktop Splash"
                                     width={1000}
                                     height={600}
