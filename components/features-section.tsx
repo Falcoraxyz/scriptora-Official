@@ -49,7 +49,7 @@ const features = [
         title: "Premium DOCX Pipeline",
         desc: "The only IDE that exports a 'Ready to Submit' DOCX. Automatic Table of Contents, List of Figures, and Roman numeral sectioning with one click.",
         icon: Quote,
-        images: ["/screenshots/tampilan-export-dark-mode.webp"],
+        images: ["/screenshots/tampilan-export-dark-mode.webp", "/screenshots/tampilan-export-day-mode.webp"],
         highlights: [
             "One-click professional DOCX export",
             "Auto-generated TOC & List of Figures",
