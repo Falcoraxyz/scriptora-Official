@@ -35,7 +35,7 @@ export function ProductShowcase() {
                     <MockupFrame title="Scriptora Live Interface" className="w-full">
                         <div className="relative aspect-video md:aspect-[21/9] overflow-hidden">
                             <Image
-                                src="/screenshots/halaman Live Document Preview.png"
+                                src="/assets/screenshots/webap/tampilan preview.webp"
                                 alt="Scriptora Real Split View Interface"
                                 fill
                                 className="object-cover object-top"

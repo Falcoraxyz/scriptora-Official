@@ -13,7 +13,7 @@ const features = [
         title: "Integrated AI Research Hub",
         desc: "Stop tab-switching. Search scientific papers across Perplexity, Consensus, Elicit, and Google Scholar in a unified workspace designed for academic rigor.",
         icon: Bot,
-        images: ["/screenshots/AI Dashboard.png"],
+        images: ["/assets/screenshots/webap/AI .webp"],
         highlights: [
             "Multi-engine search in one panel",
             "Built-in paper summarizer",
@@ -25,7 +25,7 @@ const features = [
         title: "Smart Citation Engine",
         desc: "Mendeley-level intelligence. Search and insert citations with APA 7 or IEEE standards instantly. Scriptora handles the formatting so you can focus on the content.",
         icon: ListTree,
-        images: ["/screenshots/UI Citation.png", "/screenshots/Halaman Bibliography Manager.png"],
+        images: ["/assets/screenshots/webap/Bibliography Manager.webp"],
         highlights: [
             "Import from DOI, PDF, or BibTeX",
             "Auto-format APA 7 & IEEE",
@@ -37,7 +37,7 @@ const features = [
         title: "Live Academic Preview",
         desc: "See your thesis as it will appear in print. Real-time rendering with 4-4-3-3 margins, Times New Roman 12pt, and perfect 1.5 line spacing built into the core.",
         icon: Eye,
-        images: ["/screenshots/halaman Live Document Preview.png"],
+        images: ["/assets/screenshots/webap/tampilan preview.webp"],
         highlights: [
             "WYSIWYG real-time rendering",
             "Standard academic margin preset",
@@ -49,7 +49,7 @@ const features = [
         title: "Premium DOCX Pipeline",
         desc: "The only IDE that exports a 'Ready to Submit' DOCX. Automatic Table of Contents, List of Figures, and Roman numeral sectioning with one click.",
         icon: Quote,
-        images: ["/screenshots/Halaman Export.png"],
+        images: ["/assets/screenshots/webap/tampilan export dark mode.webp"],
         highlights: [
             "One-click professional DOCX export",
             "Auto-generated TOC & List of Figures",
@@ -62,7 +62,7 @@ const features = [
         title: "Smart Asset Management",
         desc: "Centralized management for Figures, Tables, and Equations. Drag, drop, and auto-number your assets while maintaining strict academic labeling standards.",
         icon: ImageIcon,
-        images: ["/screenshots/UI insert Gambar.png", "/screenshots/UI Insert Tabel.png", "/screenshots/UI Insert Equation.png"],
+        images: ["/assets/screenshots/webap/tampilan input.webp"],
         highlights: [
             "Figures with auto-captioning",
             "Tables with header row support",
@@ -74,7 +74,7 @@ const features = [
         title: "5-Zone Document Architecture",
         desc: "A smart zone system that automatically manages page numbering across your entire document — from Cover to Appendix, each zone gets its own rules.",
         icon: Layers,
-        images: ["/screenshots/Settingan nomor halaman Untuk setiap Zone.png"],
+        images: ["/assets/screenshots/webap/tampilan setting nomor halaman.webp"],
         highlights: [
             "Zone 1: Cover (No page number)",
             "Zone 2: Preliminaries (Roman: i, ii, iii)",
@@ -86,7 +86,7 @@ const features = [
         title: "Auto-Generated Lists",
         desc: "Automatically generate Abbreviation Lists, Symbol Lists, and Glossaries. No more manual tables — Scriptora builds them from your entries and exports perfectly.",
         icon: BookOpen,
-        images: ["/screenshots/List untuk Daftar Pustaka dll.png", "/screenshots/Halaman Dokumen List.png"],
+        images: ["/assets/screenshots/webap/Document Lists.webp"],
         highlights: [
             "Daftar Singkatan (Abbreviations)",
             "Daftar Simbol (Symbols)",
@@ -98,7 +98,7 @@ const features = [
         title: "Appendix Manager",
         desc: "Manage your thesis appendices with centralized auto-numbering and caption support. Upload documents, images, or write content — all organized in one panel.",
         icon: Paperclip,
-        images: ["/screenshots/UI insert Lampiran.png"],
+        images: ["/assets/screenshots/webap/tampilan input.webp"],
         highlights: [
             "Auto-numbered Lampiran 1, 2, 3...",
             "Support for images & text content",
@@ -110,7 +110,7 @@ const features = [
         title: "Quick Notes & Drafting",
         desc: "A side panel for brainstorming and drafting ideas before they become part of your thesis body. Supports citation autocomplete so you never lose a reference.",
         icon: StickyNote,
-        images: ["/screenshots/Tampilan Notes.png"],
+        images: ["/assets/screenshots/webap/notes.webp"],
         highlights: [
             "Side-panel quick notes",
             "Citation autocomplete ({{cite:key}})",
@@ -122,7 +122,7 @@ const features = [
         title: "Guided Setup Wizard",
         desc: "Start your thesis in under 60 seconds. Choose a template (Skripsi, Tesis, Makalah, Proposal), fill in your metadata, and Scriptora builds the entire document structure for you.",
         icon: Settings,
-        images: ["/screenshots/Tampilan Setup.png", "/screenshots/wizard setup.png"],
+        images: ["/assets/screenshots/webap/Tampilan Project Initialization.webp", "/assets/screenshots/webap/tampilan wizard.webp"],
         highlights: [
             "Template selection (Skripsi, Tesis, etc.)",
             "Metadata auto-fill (Nama, NIM, Judul)",
