@@ -157,12 +157,12 @@ export function DownloadModal({ isOpen, onClose, platform }: DownloadModalProps)
                                                         <AlertCircle className="w-3 h-3" />
                                                         Scriptora is 100% Malware-Free. We are currently applying for official OS verification.
                                                     </p>
-                                                    <div className="mt-3 p-3 bg-purple-500/10 border border-purple-500/20 rounded-xl">
-                                                        <p className="text-[10px] text-purple-300 font-bold flex items-center gap-1.5 uppercase tracking-wider">
-                                                            <AlertCircle className="w-3 h-3" /> Important Note:
+                                                    <div className="mt-3 p-3 bg-primary/10 border border-primary/20 rounded-xl">
+                                                        <p className="text-[10px] text-primary/80 font-bold flex items-center gap-1.5 uppercase tracking-wider">
+                                                            <ShieldCheck className="w-3 h-3" /> Auto-Updates Enabled:
                                                         </p>
-                                                        <p className="text-[10px] text-purple-200/70 mt-1 leading-relaxed">
-                                                            The app does not support auto-updates yet. You <strong>must install the Base version first</strong> before applying the Update Patch.
+                                                        <p className="text-[10px] text-white/60 mt-1 leading-relaxed">
+                                                            Scriptora v1.0.2 now supports seamless auto-updates. You'll be notified automatically when a new version is available.
                                                         </p>
                                                     </div>
                                                 </div>
