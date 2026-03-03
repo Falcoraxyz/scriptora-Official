@@ -11,123 +11,123 @@ import { MockupFrame } from "@/components/ui/mockup-frame"
 const features = [
     {
         title: "Integrated AI Research Hub",
-        desc: "Stop tab-switching. Search scientific papers across Perplexity, Consensus, Elicit, and Google Scholar in a unified workspace designed for academic rigor.",
+        desc: "Akses jurnal ilmiah dan paper akademik langsung dari editor. Cari referensi dari Perplexity, Consensus, hingga Google Scholar tanpa perlu pindah tab.",
         icon: Bot,
         images: ["/screenshots/ai.webp"],
         highlights: [
-            "Multi-engine search in one panel",
-            "Built-in paper summarizer",
-            "Direct citation insertion from results",
-            "Academic source verification"
+            "Multi-engine search terpadu",
+            "Paper summarizer otomatis",
+            "Insert citation langsung dari hasil cari",
+            "Verifikasi sumber akademik otomatis"
         ]
     },
     {
         title: "Smart Citation Engine",
-        desc: "Mendeley-level intelligence. Search and insert citations with APA 7 or IEEE standards instantly. Scriptora handles the formatting so you can focus on the content.",
+        desc: "Manajemen referensi tingkat lanjut. Masukkan sitasi dengan standar APA 7 atau IEEE secara instan. Scriptora mengurus formatnya, Anda fokus pada konten.",
         icon: ListTree,
         images: ["/screenshots/bibliography-manager.webp"],
         highlights: [
-            "Import from DOI, PDF, or BibTeX",
+            "Import dari DOI, PDF, atau BibTeX",
             "Auto-format APA 7 & IEEE",
-            "6-layer citation validation pipeline",
-            "Groups & Tags for organization"
+            "Validasi sitasi 6-lapis",
+            "Organisasi via Groups & Tags"
         ]
     },
     {
         title: "Live Academic Preview",
-        desc: "See your thesis as it will appear in print. Real-time rendering with 4-4-3-3 margins, Times New Roman 12pt, and perfect 1.5 line spacing built into the core.",
+        desc: "Lihat hasil skripsi Anda secara real-time tepat saat Anda mengetik. Rendering standar 4-4-3-3 dengan font Times New Roman dan spasi 1.5.",
         icon: Eye,
         images: ["/screenshots/tampilan-preview.webp"],
         highlights: [
             "WYSIWYG real-time rendering",
-            "Standard academic margin preset",
-            "TNR 12pt with 1.5 line spacing",
-            "Instant chapter navigation"
+            "Preset margin akademik standar",
+            "Font TNR 12pt & Spasi 1.5",
+            "Navigasi antar bab yang instan"
         ]
     },
     {
         title: "Premium DOCX Pipeline",
-        desc: "The only IDE that exports a 'Ready to Submit' DOCX. Automatic Table of Contents, List of Figures, and Roman numeral sectioning with one click.",
+        desc: "Satu-satunya IDE yang menghasilkan DOCX 'Siap Sidang'. Dilengkapi dengan Table of Contents, List of Figures, dan sectioning otomatis yang presisi.",
         icon: Quote,
         images: ["/screenshots/tampilan-export-dark-mode.webp", "/screenshots/tampilan-export-day-mode.webp"],
         highlights: [
-            "One-click professional DOCX export",
-            "Auto-generated TOC & List of Figures",
-            "Roman + Arabic page numbering",
-            "PDF export via Word automation"
+            "Export DOCX profesional sekali klik",
+            "Otomasi TOC & Tabel Gambar",
+            "Penomoran Romawi & Arab otomatis",
+            "Support PDF via Word automation"
         ],
         badge: "PRO"
     },
     {
         title: "Smart Asset Management",
-        desc: "Centralized management for Figures, Tables, and Equations. Drag, drop, and auto-number your assets while maintaining strict academic labeling standards.",
+        desc: "Kelola Gambar, Tabel, dan Persamaan Matematika di satu tempat. Penomoran otomatis (Gambar 1, Tabel 2) sesuai standar penulisan karya ilmiah.",
         icon: ImageIcon,
         images: ["/screenshots/tampilan-input.webp"],
         highlights: [
-            "Figures with auto-captioning",
-            "Tables with header row support",
-            "LaTeX equations → MathML export",
-            "Academic auto-numbering (Gambar 1, Tabel 2...)"
+            "Auto-captioning untuk Gambar",
+            "Tabel dengan header row support",
+            "Persamaan LaTeX ke MathML",
+            "Manajemen aset terpusat"
         ]
     },
     {
         title: "5-Zone Document Architecture",
-        desc: "A smart zone system that automatically manages page numbering across your entire document — from Cover to Appendix, each zone gets its own rules.",
+        desc: "Sistem zona pintar yang mengatur penomoran halaman secara otomatis mulai dari Cover, Kata Pengantar, hingga Lampiran dokumen Anda.",
         icon: Layers,
         images: ["/screenshots/tampilan-setting-halaman.webp"],
         highlights: [
-            "Zone 1: Cover (No page number)",
-            "Zone 2: Preliminaries (Roman: i, ii, iii)",
-            "Zone 3: Content (Arabic: 1, 2, 3)",
-            "Zone 4-5: Appendix & Special Pages"
+            "Zona 1: Cover (Tanpa nomor)",
+            "Zona 2: Preliminaries (Romawi: i, ii, iii)",
+            "Zona 3: Konten Utama (Arab: 1, 2, 3)",
+            "Zona 4-5: Lampiran & Halaman Khusus"
         ]
     },
     {
         title: "Auto-Generated Lists",
-        desc: "Automatically generate Abbreviation Lists, Symbol Lists, and Glossaries. No more manual tables — Scriptora builds them from your entries and exports perfectly.",
+        desc: "Hasilkan Daftar Singkatan, Daftar Simbol, dan Glosarium secara otomatis. Tidak perlu lagi membuat tabel manual yang melelahkan.",
         icon: BookOpen,
         images: ["/screenshots/document-lists.webp"],
         highlights: [
-            "Daftar Singkatan (Abbreviations)",
-            "Daftar Simbol (Symbols)",
-            "Glosarium (Glossary)",
-            "Exported as formatted DOCX sections"
+            "Daftar Singkatan otomatis",
+            "Daftar Simbol terintegrasi",
+            "Glosarium pintar",
+            "Export sebagai section DOCX"
         ]
     },
     {
-        title: "Appendix Manager",
-        desc: "Manage your thesis appendices with centralized auto-numbering and caption support. Upload documents, images, or write content — all organized in one panel.",
+        title: "User Guide & Appendices",
+        desc: "Kelola lampiran skripsi Anda dengan mudah. Lengkap dengan panduan penggunaan yang terintegrasi untuk membantu menyelesaikan naskah lebih cepat.",
         icon: Paperclip,
-        images: ["/screenshots/tampilan-input.webp"],
+        images: ["/screenshots/user-guide.webp"],
         highlights: [
-            "Auto-numbered Lampiran 1, 2, 3...",
-            "Support for images & text content",
-            "Centralized caption management",
-            "Exported with proper formatting"
+            "Manajemen Lampiran (Appendix)",
+            "Panduan interaktif GitBook style",
+            "Support dokumen & gambar lampiran",
+            "Organisasi file pendukung terpusat"
         ]
     },
     {
         title: "Quick Notes & Drafting",
-        desc: "A side panel for brainstorming and drafting ideas before they become part of your thesis body. Supports citation autocomplete so you never lose a reference.",
+        desc: "Panel samping untuk mencatat ide dan draft kasar sebelum dimasukkan ke naskah utama. Mendukung autocomplete kutipan agar referensi tidak hilang.",
         icon: StickyNote,
         images: ["/screenshots/notes.webp"],
         highlights: [
-            "Side-panel quick notes",
-            "Citation autocomplete ({{cite:key}})",
-            "Per-project note storage",
-            "Drag ideas into your main editor"
+            "Quick notes di panel samping",
+            "Autocomplete sitasi ({{cite:key}})",
+            "Penyimpanan per-project",
+            "Drag & Drop ide ke editor"
         ]
     },
     {
         title: "Guided Setup Wizard",
-        desc: "Start your thesis in under 60 seconds. Choose a template (Skripsi, Tesis, Makalah, Proposal), fill in your metadata, and Scriptora builds the entire document structure for you.",
+        desc: "Mulai naskah Anda dalam 60 detik. Pilih template (Skripsi, Tesis, Makalah), isi metadata, dan Scriptora akan membangun seluruh struktur dokumen untuk Anda.",
         icon: Settings,
         images: ["/screenshots/tampilan-project-initialization.webp", "/screenshots/tampilan-wizard.webp"],
         highlights: [
-            "Template selection (Skripsi, Tesis, etc.)",
-            "Metadata auto-fill (Nama, NIM, Judul)",
-            "University preset formatting",
-            "Structure generated in seconds"
+            "Pilihan Template (Skripsi, Tesis, dll)",
+            "Isi Metadata otomatis (NIM, Nama, Judul)",
+            "Preset universitas Indonesia",
+            "Struktur dokumen instan"
         ]
     }
 ]
@@ -271,20 +271,6 @@ function FeatureBlock({ feature: f, index: i }: { feature: FeatureData, index: n
                         )}
                     </MockupFrame>
                 </TiltWrapper>
-
-                {/* Floating Elements for depth */}
-                <motion.div
-                    animate={{ y: [0, -10, 0], scale: [1, 1.05, 1] }}
-                    transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute -top-6 -right-6 z-30 pointer-events-none"
-                >
-                    <div className="bg-[#0B0613]/90 backdrop-blur-md border border-primary/30 rounded-xl p-3 px-4 shadow-xl">
-                        <div className="flex items-center gap-2">
-                            <Sparkles className="w-4 h-4 text-primary" />
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-white/80">AI Enhanced</span>
-                        </div>
-                    </div>
-                </motion.div>
 
                 {/* Background Glow */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-primary/10 rounded-full blur-[100px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
