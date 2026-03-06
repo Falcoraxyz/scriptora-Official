@@ -6,8 +6,10 @@ export const DOWNLOAD_VERSIONS = {
         { label: "Windows Installer (MSI)", link: `${R2_DOMAIN}/windows/1.0.2/Scriptora_1.0.2_x64_en-US.msi`, type: "Enterprise", version: "1.0.2", size: "124MB" },
     ],
     macos: [
-        { label: "macOS Apple Silicon (M1/M2/M3)", link: `${R2_DOMAIN}/macos/1.0.2/Scriptora_aarch64.app.tar.gz`, type: "Recommended", version: "1.0.2", size: "124MB" },
-        { label: "macOS Intel", link: `${R2_DOMAIN}/macos/1.0.2/Scriptora_x64.app.tar.gz`, type: "Legacy", version: "1.0.2", size: "125MB" },
+        { label: "macOS Apple Silicon (DMG)", link: `${R2_DOMAIN}/macos/1.0.2/Scriptora_1.0.2_aarch64.dmg`, type: "Recommended", version: "1.0.2", size: "124MB" },
+        { label: "macOS Intel (DMG)", link: `${R2_DOMAIN}/macos/1.0.2/Scriptora_1.0.2_x64.dmg`, type: "Standard", version: "1.0.2", size: "125MB" },
+        { label: "macOS Silicon (TAR.GZ)", link: `${R2_DOMAIN}/macos/1.0.2/Scriptora_aarch64.app.tar.gz`, type: "Auto-Update", version: "1.0.2", size: "124MB" },
+        { label: "macOS Intel (TAR.GZ)", link: `${R2_DOMAIN}/macos/1.0.2/Scriptora_x64.app.tar.gz`, type: "Legacy", version: "1.0.2", size: "125MB" },
     ],
     linux: [
         { label: "Linux Debian/Ubuntu (DEB)", link: `${R2_DOMAIN}/linux/1.0.2/Scriptora_1.0.2_amd64.deb`, type: "Recommended", version: "1.0.2", size: "128MB" },
