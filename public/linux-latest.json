@@ -1,0 +1,11 @@
+{
+  "version": "1.0.2",
+  "notes": "Initial release with license system and auto-installer",
+  "pub_date": "2026-03-03T00:00:00Z",
+  "platforms": {
+    "linux-x86_64": {
+      "signature": "",
+      "url": "https://7aa6a6ab37385d89e1d34bfbe7ed0e20.r2.cloudflarestorage.com/linux/1.0.2/Scriptora_1.0.2_amd64.AppImage"
+    }
+  }
+}

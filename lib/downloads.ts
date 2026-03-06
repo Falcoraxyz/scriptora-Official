@@ -1,4 +1,4 @@
-const R2_DOMAIN = "https://dl.scriptora-official.workers.dev";
+const R2_DOMAIN = "https://7aa6a6ab37385d89e1d34bfbe7ed0e20.r2.cloudflarestorage.com";
 
 export const DOWNLOAD_VERSIONS = {
     windows: [
