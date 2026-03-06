@@ -5,7 +5,7 @@
   "platforms": {
     "linux-x86_64": {
       "signature": "",
-      "url": "https://7aa6a6ab37385d89e1d34bfbe7ed0e20.r2.cloudflarestorage.com/linux/1.0.2/Scriptora_1.0.2_amd64.AppImage"
+      "url": "https://dl.scriptora-official.workers.dev/linux/1.0.2/Scriptora_1.0.2_amd64.AppImage"
     }
   }
 }

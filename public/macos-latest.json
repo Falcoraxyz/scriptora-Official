@@ -5,11 +5,11 @@
   "platforms": {
     "darwin-x86_64": {
       "signature": "",
-      "url": "https://7aa6a6ab37385d89e1d34bfbe7ed0e20.r2.cloudflarestorage.com/macos/1.0.2/Scriptora_x64.app.tar.gz"
+      "url": "https://dl.scriptora-official.workers.dev/macos/1.0.2/Scriptora_x64.app.tar.gz"
     },
     "darwin-aarch64": {
       "signature": "",
-      "url": "https://7aa6a6ab37385d89e1d34bfbe7ed0e20.r2.cloudflarestorage.com/macos/1.0.2/Scriptora_aarch64.app.tar.gz"
+      "url": "https://dl.scriptora-official.workers.dev/macos/1.0.2/Scriptora_aarch64.app.tar.gz"
     }
   }
 }
